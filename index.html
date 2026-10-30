@@ -553,6 +553,9 @@ body:not(.is-owner) .owner-only{display:none!important}
 /* hotel name a little bigger */
 header .eyebrow{font-size:1.15rem;letter-spacing:.12em;font-weight:700;line-height:1.3}
 @media (max-width:480px){header .eyebrow{font-size:.95rem;letter-spacing:.08em}}
+
+.tag.user{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.tag.user::before{content:"👤 "}
 </style>
 </head>
 <body>
@@ -648,7 +651,7 @@ header .eyebrow{font-size:1.15rem;letter-spacing:.12em;font-weight:700;line-heig
     </select>
     <input id="lg-from" type="date" title="From">
     <input id="lg-to" type="date" title="To">
-    <input id="lg-q" data-tp="Search room / name" placeholder="Search room / name">
+    <input id="lg-q" data-tp="Search room / name / user" placeholder="Search room / name / user">
   </div>
   <div id="log"></div>
 </section>
@@ -1218,7 +1221,7 @@ function filtered(p){const prop=$("#"+p+"-prop").value,from=$("#"+p+"-from").val
   const q=p==="lg"?$("#lg-q").value.trim().toLowerCase():"",st=p==="lg"?$("#lg-st").value:"";
   return LOG.filter(r=>(!prop||r.prop===prop)&&(!from||r.date>=from)&&(!to||r.date<=to)
     &&(!st||(st==="open"?isOpen(r):statusKey(r.score)===st))
-    &&(!q||[r.room,r.sup,r.att,r.prop].join(" ").toLowerCase().includes(q)))}
+    &&(!q||[r.room,r.sup,r.att,r.prop,r.by].join(" ").toLowerCase().includes(q)))}
 ["prop","st","from","to","q"].forEach(f=>{const e=$("#lg-"+f);if(e)e.addEventListener("input",renderLog)});
 ["prop","from","to"].forEach(f=>$("#db-"+f).addEventListener("input",()=>renderDash()));
 
@@ -1230,6 +1233,7 @@ function renderLog(){
     const d=el("details","entry"),s=el("summary");
     const rm=el("button","linkbtn",t("Room")+" "+r.room);rm.type="button";rm.onclick=e=>{e.preventDefault();roomHistory(r.prop,r.room)};
     s.append(rm,el("span","muted",r.prop+" · "+r.date),el("span","badge "+statusOf(r.score)[1],t(r.status)));
+    {const ut=el("span","tag user",r.by||"Unknown user");ut.title="Entered by (login)";s.append(ut)}
     if(isOpen(r))s.append(el("span","tag open",t("Open")));else if(r.score<95&&r.closed_at)s.append(el("span","tag closed",t("Closed")));
     if(r.updated_at)s.append(el("span","tag edited",t("Edited")));
     if(r.maint)s.append(el("span","tag "+(isMaintOpen(r)?(r.maint.priority==="urgent"?"urgent":"maint"):"closed"),isMaintOpen(r)?(r.maint.priority==="urgent"?"Maintenance · urgent":"Maintenance"):"Maintenance fixed"));
@@ -1806,9 +1810,9 @@ function dl(name,text,type){const b=new Blob([text],{type});const a=el("a");a.hr
 const q=v=>{v=v==null?"":String(v);if(/^[=+\-@]/.test(v))v="'"+v;return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
 const csv=rows=>"﻿"+rows.map(r=>r.map(q).join(",")).join("\r\n");
 $("#expCsv").onclick=()=>{if(!LOG.length)return toast(t("Nothing to export"));
-  const head=["Date","Property","Room","Supervisor","Attendant","Signed","Score","Status","Defects","Open","Closed note",...ITEMS.map(i=>i.sec+" | "+i.t+" ("+i.p+")")];
+  const head=["Date","Property","Room","Supervisor","Attendant","Entered by (user)","Signed","Score","Status","Defects","Open","Closed note",...ITEMS.map(i=>i.sec+" | "+i.t+" ("+i.p+")")];
   const rows=LOG.map(r=>{const nas=new Set((r.na||[]).map(x=>x.id)),f=new Set(r.defects.map(d=>d.id)),ri=roomInfo(r.prop,r.room)||{};
-    return[r.date,r.prop,r.room,r.sup,r.att,r.sign,r.score,r.status,r.fails,isOpen(r)?"Yes":"No",r.close_note,...ITEMS.map(i=>f.has(i.id)?"✗":nas.has(i.id)?"N/A":"✓")]});
+    return[r.date,r.prop,r.room,r.sup,r.att,r.by||"",r.sign,r.score,r.status,r.fails,isOpen(r)?"Yes":"No",r.close_note,...ITEMS.map(i=>f.has(i.id)?"✗":nas.has(i.id)?"N/A":"✓")]});
   dl("Room_Inspections_"+today()+".csv",csv([head,...rows]),"text/csv;charset=utf-8")};
 $("#expDef").onclick=()=>{const rows=[];LOG.forEach(r=>r.defects.forEach(d=>{const i=IT(d.id);rows.push([r.date,r.prop,r.room,r.sup,r.att,i.sec,i.t,i.ta,d.p||i.p,d.remark,d.photo?"Yes":""])}));
   if(!rows.length)return toast(t("No defects to export"));
