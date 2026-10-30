@@ -427,33 +427,29 @@ h2 .btn.sm{text-transform:none;letter-spacing:0}
 .rp .rp-sub{color:#555}
 .rp .ar{font-family:"Segoe UI","Noto Sans Arabic",Tahoma,sans-serif;color:#555}
 
-/* ===== Hotel 2 style: Turquoise ===== */
-:root{
-  --bg:#f2f8f8;--surface:#ffffff;--line:#d9ebea;--line2:#c4dedd;--fg:#13292b;--muted:#5d7476;
-  --accent:#0b7f82;--accent-soft:#dff3f2;--gold:#7fe0d8;--coral:#0e9e9a;--coral-soft:#dcf4f2;
-  --hdr1:#12b0ad;--hdr2:#08767b;
-}
-@media (prefers-color-scheme:dark){:root{
-  --bg:#0a1a1b;--surface:#102627;--line:#1b3a3b;--line2:#254b4c;--fg:#e3f3f2;--muted:#8fb1b2;
-  --accent:#4fd3cc;--accent-soft:#123637;--gold:#7fe0d8;--coral:#4fd3cc;--coral-soft:#123a3a;
-  --hdr1:#0d7f7f;--hdr2:#063f43;color-scheme:dark}}
-header{box-shadow:0 8px 24px rgb(8 118 123/.25);border-bottom:0}
-.eyebrow,.who b{color:#c9fbf6}
-.meter i{background:linear-gradient(90deg,#0b7f82,#2cc7c1)}
-.btn.primary{box-shadow:0 4px 12px rgb(11 127 130/.28)}
-input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgb(11 127 130/.15)}
-.chips button.on{color:#fff}
-@media (prefers-color-scheme:dark){.chips button.on,.btn.primary{color:#062224}}
-.rp-head{background:#0b7f82!important}.rp-head small{color:#c9fbf6!important}
-.rp h2{color:#0b7f82;border-bottom-color:#0b7f82}.rp th{color:#0b7f82;background:#e6f6f5!important}.rp .sect td{color:#0b7f82}
+/* ---- Not applicable (N/A) ---- */
+.btns button.bn{font-size:.72rem;letter-spacing:.04em}
+.item.na{background:var(--accent-soft)}
+.item.na .pri,.item.na .sec2{opacity:.6}
+.item.na .bn{background:var(--muted);color:#fff;box-shadow:0 2px 6px rgb(0 0 0/.18)}
+.rp td.r.na{color:#888;font-size:9px}
+.rp tr.n td{color:#999}
 
-.hlogo{display:block;height:40px;width:auto;margin:2px 0 10px}
-.llogo{display:block;height:58px;width:auto;margin:4px auto 16px}
-@media (prefers-color-scheme:dark){.llogo{filter:invert(1)}}
-.rp-logo{display:block;height:34px;width:auto;margin-bottom:6px}
-
+/* ---- refresh button ---- */
 .refbtn{position:absolute;top:calc(14px + env(safe-area-inset-top));inset-inline-end:max(16px,env(safe-area-inset-right));font:600 .78rem/1 inherit;color:#fff;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.3);border-radius:999px;padding:7px 12px;cursor:pointer}
-.refbtn:hover{background:rgb(255 255 255/.24)}.refbtn[disabled]{opacity:.6;cursor:wait}
+.refbtn:hover{background:rgb(255 255 255/.24)}
+.refbtn[disabled]{opacity:.6;cursor:wait}
+/* ---- maintenance ---- */
+.maintcard{margin-top:14px;border-inline-start:4px solid var(--warn)}
+.mchips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
+.mchips button{font:600 .8rem/1 inherit;padding:9px 12px;border-radius:999px;border:1px solid var(--line2);background:var(--surface);color:var(--fg);cursor:pointer}
+.mchips button.on{background:var(--warn);border-color:var(--warn);color:#fff}
+.mrow{display:grid;grid-template-columns:minmax(0,220px);gap:10px;margin-bottom:10px}
+#m-note{min-height:70px}
+.tag.maint{background:var(--warn-soft);color:var(--warn)}
+.tag.urgent{background:var(--fail-soft);color:var(--fail)}
+.mbtns{display:flex;flex-wrap:wrap;gap:6px}
+.rp .mt{border:1px solid #f0dcae;background:#fff8e8!important;border-radius:8px;padding:8px 10px;break-inside:avoid}
 
 /* ---- notifications bell (Admin) ---- */
 .hbtns{position:absolute;top:calc(14px + env(safe-area-inset-top));inset-inline-end:max(16px,env(safe-area-inset-right));display:flex;gap:8px;align-items:center;z-index:6}
@@ -496,6 +492,34 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgb(11 127 130/.15)
 .heat td.c{font-weight:700;font-variant-numeric:tabular-nums;cursor:default}
 .heatkey{display:flex;align-items:center;gap:8px;font-size:.74rem;color:var(--muted);margin-top:8px}
 .heatkey i{display:block;width:120px;height:8px;border-radius:4px;background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 10%,var(--surface)),var(--accent))}
+
+/* ===== Hotel 2 style: Turquoise ===== */
+:root{
+  --bg:#f2f8f8;--surface:#ffffff;--line:#d9ebea;--line2:#c4dedd;--fg:#13292b;--muted:#5d7476;
+  --accent:#0b7f82;--accent-soft:#dff3f2;--gold:#7fe0d8;--coral:#0e9e9a;--coral-soft:#dcf4f2;
+  --hdr1:#12b0ad;--hdr2:#08767b;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0a1a1b;--surface:#102627;--line:#1b3a3b;--line2:#254b4c;--fg:#e3f3f2;--muted:#8fb1b2;
+  --accent:#4fd3cc;--accent-soft:#123637;--gold:#7fe0d8;--coral:#4fd3cc;--coral-soft:#123a3a;
+  --hdr1:#0d7f7f;--hdr2:#063f43;color-scheme:dark}}
+header{box-shadow:0 8px 24px rgb(8 118 123/.25);border-bottom:0}
+.eyebrow,.who b{color:#c9fbf6}
+.meter i{background:linear-gradient(90deg,#0b7f82,#2cc7c1)}
+.btn.primary{box-shadow:0 4px 12px rgb(11 127 130/.28)}
+input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgb(11 127 130/.15)}
+.chips button.on{color:#fff}
+@media (prefers-color-scheme:dark){.chips button.on,.btn.primary{color:#062224}}
+.rp-head{background:#0b7f82!important}.rp-head small{color:#c9fbf6!important}
+.rp h2{color:#0b7f82;border-bottom-color:#0b7f82}.rp th{color:#0b7f82;background:#e6f6f5!important}.rp .sect td{color:#0b7f82}
+
+.hlogo{display:block;height:40px;width:auto;margin:2px 0 10px}
+.llogo{display:block;height:58px;width:auto;margin:4px auto 16px}
+@media (prefers-color-scheme:dark){.llogo{filter:invert(1)}}
+.rp-logo{display:block;height:34px;width:auto;margin-bottom:6px}
+
+.refbtn{position:absolute;top:calc(14px + env(safe-area-inset-top));inset-inline-end:max(16px,env(safe-area-inset-right));font:600 .78rem/1 inherit;color:#fff;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.3);border-radius:999px;padding:7px 12px;cursor:pointer}
+.refbtn:hover{background:rgb(255 255 255/.24)}.refbtn[disabled]{opacity:.6;cursor:wait}
 
 /* ---- desktop: use the full screen ---- */
 @media (min-width:1024px){
@@ -591,6 +615,13 @@ header .eyebrow{font-size:1.15rem;letter-spacing:.12em;font-weight:700;line-heig
   </div>
   <div id="form" style="margin-top:12px"></div>
 
+  <div class="card maintcard" id="maintCard">
+    <div class="signhead"><b>Maintenance</b><span class="muted">Not scored · goes to the maintenance report</span></div>
+    <div class="mchips" id="mChips"></div>
+    <div class="mrow"><label class="f"><span>Priority</span><select id="m-pri"><option value="normal">Normal</option><option value="urgent">Urgent</option></select></label></div>
+    <label class="f"><span>Maintenance note</span><textarea id="m-note" placeholder="Describe the issue, e.g. AC not cooling, shower leaking"></textarea></label>
+  </div>
+
   <div class="card signcard">
     <div class="signhead"><b data-t="Attendant acknowledgement">Attendant acknowledgement</b></div>
     <label class="f"><span data-t="Attendant name">Attendant name</span><input id="f-sign" data-tp="Attendant types name" placeholder="Attendant types name"></label>
@@ -624,11 +655,11 @@ header .eyebrow{font-size:1.15rem;letter-spacing:.12em;font-weight:700;line-heig
 
 <!-- DASHBOARD (Admin) -->
 <section class="view" id="v-dash" hidden>
-  <h2><span data-t="Dashboard">Dashboard</span> <button class="btn sm" id="dashPdf" type="button" data-t="PDF summary">PDF summary</button></h2>
+  <h2><span data-t="Dashboard">Dashboard</span> <span class="mbtns"><button class="btn sm" id="dashPdf" type="button" data-t="PDF summary">PDF summary</button><button class="btn sm" id="dashXls" type="button">Excel summary</button></span></h2>
   <div class="ptitle" id="dashPrintTitle"></div>
   <div class="dfilter">
     <div class="chips" id="db-chips" role="group" aria-label="Date range">
-      <button data-r="today" data-t="Today">Today</button><button data-r="7" data-t="7 days">7 days</button><button data-r="30" data-t="30 days">30 days</button><button data-r="month" data-t="This month">This month</button><button data-r="all" class="on" data-t="All time">All time</button>
+      <button data-r="today" data-t="Today">Today</button><button data-r="7" data-t="7 days">7 days</button><button data-r="30" data-t="30 days">30 days</button><button data-r="month" data-t="This month">This month</button><button data-r="ytd" class="on">YTD</button>
     </div>
     <select id="db-prop" class="dprop" hidden></select>
     <div class="dates"><input id="db-from" type="date" title="From" aria-label="From"><span class="muted" data-t="to">to</span><input id="db-to" type="date" title="To" aria-label="To"></div>
@@ -877,9 +908,9 @@ function buildForm(){
       const id=it.id,row=el("div","item");row.id="r-"+id;
       const tx=el("div");const pri=el("span","pri",itName(it));pri.dir="auto";pri.append(el("span","pts",it.p+" "+t("pts")));tx.append(pri);
       const o=LANG==="ar"?it.t:it.ta;if(o&&o!==itName(it)){const s2=el("span","sec2",o);s2.dir="auto";tx.append(s2)}
-      const b=el("div","btns");const bp=el("button","bp","✓"),bf=el("button","bf","✗");bp.type=bf.type="button";
+      const b=el("div","btns");const bp=el("button","bp","✓"),bf=el("button","bf","✗"),bn=el("button","bn","N/A");bp.type=bf.type=bn.type="button";bn.title="Not applicable";bn.setAttribute("aria-label","Not applicable");
       bp.setAttribute("aria-label",t("Pass"));bf.setAttribute("aria-label",t("Fail"));
-      bp.onclick=()=>mark(id,"P");bf.onclick=()=>mark(id,"F");b.append(bp,bf);
+      bp.onclick=()=>mark(id,"P");bf.onclick=()=>mark(id,"F");bn.onclick=()=>mark(id,"N");b.append(bp,bf,bn);
       const rm=el("input");rm.id="m-"+id;rm.placeholder=t("Remark: what needs fixing");rm.hidden=true;rm.oninput=()=>{remarks[id]=rm.value;saveDraft()};
       const ph=el("div","photorow");ph.id="p-"+id;ph.hidden=true;
       row.append(tx,b,rm,ph);wrap.append(row)});
@@ -889,7 +920,7 @@ function buildForm(){
   ITEMS.forEach(i=>paint(i.id));update();
 }
 function mark(id,v){state[id]=state[id]===v?undefined:v;if(!state[id])delete state[id];if(!started&&!EDIT)started=Date.now();paint(id);update();saveDraft()}
-function paint(id){const r=byId("r-"+id);if(!r)return;const v=state[id];r.classList.toggle("pass",v==="P");r.classList.toggle("fail",v==="F");
+function paint(id){const r=byId("r-"+id);if(!r)return;const v=state[id];r.classList.toggle("pass",v==="P");r.classList.toggle("fail",v==="F");r.classList.toggle("na",v==="N");
   const m=byId("m-"+id);m.hidden=v!=="F";m.value=remarks[id]||"";paintPhoto(id)}
 function paintPhoto(id){const box=byId("p-"+id);if(!box)return;box.innerHTML="";box.hidden=true;return;   /* photo feature removed */
   
@@ -900,7 +931,8 @@ function paintPhoto(id){const box=byId("p-"+id);if(!box)return;box.innerHTML="";
     x.onclick=()=>{delete photos[id];delete oldPhotos[id];paintPhoto(id);saveDraft()};th.append(img,x);box.append(th)}
   else{const b=el("button","photobtn","📷 "+t("Add photo"));b.type="button";b.onclick=()=>pickPhoto(id);box.append(b)}}
 function openImg(src){if(!src)return;const w=window.open();if(w){w.document.title=t("Photo");const i=w.document.createElement("img");i.src=src;i.style.maxWidth="100%";w.document.body.append(i)}}
-function calc(st){let score=0,checked=0,fails=0;ITEMS.forEach(i=>{if(st[i.id])checked++;if(st[i.id]==="P")score+=i.p;if(st[i.id]==="F")fails++});return{score,checked,fails}}
+function calc(st){let got=0,applies=0,checked=0,fails=0,na=0;ITEMS.forEach(i=>{if(st[i.id])checked++;if(st[i.id]==="N"){na++;return}applies+=i.p;if(st[i.id]==="P")got+=i.p;if(st[i.id]==="F")fails++});
+  return{score:applies>0?Math.round(got/applies*100):0,checked,fails,na}}
 function update(){
   const {score,checked,fails}=calc(state);
   $("#score").textContent=score;$("#meter").style.width=score+"%";$("#checked").textContent=checked;$("#fails").textContent=fails;
@@ -908,7 +940,7 @@ function update(){
   if(!checked){s.textContent=t("Not started");s.className="badge b-none"}
   else if(checked<ITEMS.length){s.textContent=(ITEMS.length-checked)+" "+t("left");s.className="badge b-none"}
   else{const [l,c]=statusOf(score);s.textContent=t(l);s.className="badge "+c}
-  SECS.forEach((sec,si)=>{let got=0,max=0;sec.items.forEach(it=>{max+=it.p;if(state[it.id]==="P")got+=it.p});const e=byId("ss-"+si);if(e)e.textContent=got+"/"+max});
+  SECS.forEach((sec,si)=>{let got=0,max=0;sec.items.forEach(it=>{if(state[it.id]==="N")return;max+=it.p;if(state[it.id]==="P")got+=it.p});const e=byId("ss-"+si);if(e)e.textContent=!max&&sec.items.length?"N/A":got+"/"+max});
 }
 
 /* photos: compressed on the phone before upload */
@@ -938,8 +970,9 @@ function sigDraw(){sigData=null}
 
 /* draft: the sheet in progress survives a reload */
 const F=["date","prop","room","sup","att","sign"];
-function saveDraft(){if(EDIT)return;const d={state,remarks,photos,sig:sigData,started};F.forEach(f=>d[f]=$("#f-"+f).value);store(K.draft,d)}
+function saveDraft(){if(EDIT)return;const d={state,remarks,photos,sig:sigData,started,maint:MAINT};F.forEach(f=>d[f]=$("#f-"+f).value);store(K.draft,d)}
 function loadDraft(d){d=d||load(K.draft,null);state={};remarks={};photos={};oldPhotos={};sigData=null;started=null;
+  setMaint(d&&d.maint);
   if(d){state=d.state||{};remarks=d.remarks||{};photos=d.photos||{};started=d.started||null;F.forEach(f=>{if(d[f]!=null)$("#f-"+f).value=d[f]})}
   if(!$("#f-date").value)$("#f-date").value=today();if(!$("#f-prop").value)$("#f-prop").value=PROPS[0]||"";
   sigDraw(d&&d.sig);ITEMS.forEach(i=>paint(i.id));update();roomCheck()}
@@ -952,10 +985,26 @@ $("#clearMarks").onclick=e=>{if(!Object.keys(state).length)return toast(t("No ma
   arm(e.currentTarget,()=>{state={};remarks={};photos={};oldPhotos={};ITEMS.forEach(i=>paint(i.id));update();saveDraft();toast(t("All marks cleared"))})};
 $("#toggleAll").onclick=e=>{const boxes=[...document.querySelectorAll(".sec")];const close=!boxes.every(b=>b.classList.contains("closed"));
   boxes.forEach(b=>b.classList.toggle("closed",close));e.currentTarget.textContent=t(close?"Expand all":"Collapse all")};
-function clearSheet(keepHeader){state={};remarks={};photos={};oldPhotos={};started=null;["room","att","sign"].forEach(f=>$("#f-"+f).value="");
+function clearSheet(keepHeader){state={};remarks={};photos={};oldPhotos={};started=null;setMaint(null);["room","att","sign"].forEach(f=>$("#f-"+f).value="");
   if(!keepHeader){$("#f-sup").value="";$("#f-date").value=today()}sigClear();
   ITEMS.forEach(i=>paint(i.id));update();saveDraft();roomCheck();window.scrollTo({top:0,behavior:"smooth"})}
 $("#clear").onclick=e=>arm(e.currentTarget,()=>{if(EDIT)return exitEdit();clearSheet(true)});
+
+/* ---------- maintenance (not scored) ---------- */
+const MCATS=[["ac","Air conditioning"],["light","Lighting"],["plumb","Plumbing / leak"],["elec","Electrical / sockets"],["door","Door / lock"],
+  ["furn","Furniture damage"],["tv","TV / remote"],["wall","Walls / paint"],["bath","Bathroom fixtures"],["other","Other"]];
+const mName=id=>(MCATS.find(c=>c[0]===id)||[id,id])[1];
+let MAINT={items:[],priority:"normal",note:""};
+function setMaint(m){MAINT={items:(m&&m.items||[]).filter(x=>MCATS.some(c=>c[0]===x)),priority:m&&m.priority==="urgent"?"urgent":"normal",note:(m&&m.note)||""};renderMaint()}
+function renderMaint(){const box=$("#mChips");if(!box)return;box.innerHTML="";
+  MCATS.forEach(([id,name])=>{const b=el("button",MAINT.items.includes(id)?"on":null,name);b.type="button";
+    b.onclick=()=>{MAINT.items=MAINT.items.includes(id)?MAINT.items.filter(x=>x!==id):[...MAINT.items,id];renderMaint();saveDraft()};box.append(b)});
+  $("#m-pri").value=MAINT.priority;$("#m-note").value=MAINT.note}
+$("#m-pri").onchange=()=>{MAINT.priority=$("#m-pri").value;saveDraft()};
+$("#m-note").oninput=()=>{MAINT.note=$("#m-note").value;saveDraft()};
+const maintOut=()=>MAINT.items.length||MAINT.note.trim()?{items:MAINT.items.slice(),priority:MAINT.priority,note:MAINT.note.trim().slice(0,500)}:null;
+const maintText=m=>m?[(m.items||[]).map(mName).join(", "),m.note].filter(Boolean).join(" — "):"";
+const isMaintOpen=r=>!!r.maint&&!r.maint_fixed_at;
 
 /* room list check */
 function fillRoomList(){}
@@ -968,14 +1017,15 @@ let ME=null,ROLE="user",MYNAME="";
 const IS_ADMIN=()=>ROLE==="admin";
 const toRow=r=>{const o={uid:r.uid,insp_date:r.date,prop:r.prop||PROPS[0],room:String(r.room),sup:r.sup,att:r.att,sign:r.sign||null,
   defects:(r.defects||[]).map(d=>{const x={id:d.id,remark:d.remark||""};if(d.photo)x.photo=d.photo;return x})};
-  if(r.signature)o.signature=r.signature;if(r.duration_sec!=null)o.duration_sec=r.duration_sec;return o};
+  if(r.signature)o.signature=r.signature;if(r.duration_sec!=null)o.duration_sec=r.duration_sec;
+  if(r.na&&r.na.length)o.na=r.na.map(x=>({id:x.id||x}));if(r.maint)o.maint=r.maint;return o};
 /* items queued by any app version: new {rec}, older {row} */
 const recOf=item=>item.rec||(item.row&&item.row.uid?{uid:item.row.uid,date:item.row.insp_date,prop:item.row.prop,room:item.row.room,sup:item.row.sup,att:item.row.att,
-  sign:item.row.sign,signature:item.row.signature,duration_sec:item.row.duration_sec,defects:item.row.defects||[]}:null);
+  sign:item.row.sign,signature:item.row.signature,duration_sec:item.row.duration_sec,defects:item.row.defects||[],na:item.row.na||[],maint:item.row.maint||null}:null);
 const fromRow=r=>({id:r.id,uid:r.uid,ts:r.created_at,date:r.insp_date,prop:r.prop,room:r.room,sup:r.sup,att:r.att,sign:r.sign||"",
   signature:r.signature||null,duration_sec:r.duration_sec,score:r.score,fails:r.fails,status:r.status,
   by:(r.creator&&r.creator.full_name)||"",editedBy:(r.editor&&r.editor.full_name)||"",updated_at:r.updated_at,
-  closed_at:r.closed_at,closed_by:r.closed_by,close_note:r.close_note||"",
+  closed_at:r.closed_at,closed_by:r.closed_by,close_note:r.close_note||"",na:r.na||[],maint:r.maint||null,maint_fixed_at:r.maint_fixed_at||null,
   defects:(r.defects||[]).slice().sort((a,b)=>{const x=CL.findIndex(c=>c.id===a.id),y=CL.findIndex(c=>c.id===b.id);return x-y})});
 const isOpen=r=>r.score<95&&!r.closed_at;
 
@@ -1050,7 +1100,8 @@ $("#save").onclick=async()=>{
   if(!ME)return show("login");
   const defects=ITEMS.filter(i=>state[i.id]==="F").map(i=>{const d={id:i.id,remark:(remarks[i.id]||"").trim()};
     if(photos[i.id])d.photoData=photos[i.id];else if(oldPhotos[i.id])d.photo=oldPhotos[i.id];return d});
-  const base={date:v("date"),prop:v("prop"),room:v("room"),sup:v("sup"),att:v("att"),sign:v("sign"),signature:sigData,defects};
+  const na=ITEMS.filter(i=>state[i.id]==="N").map(i=>({id:i.id}));
+  const base={date:v("date"),prop:v("prop"),room:v("room"),sup:v("sup"),att:v("att"),sign:v("sign"),signature:sigData,defects,na,maint:maintOut()};
   if(EDIT)return saveEdit(base);
   const rec={uid:uidNew(),ts:new Date().toISOString(),...base,duration_sec:null};
   if(!queue(rec))return;
@@ -1067,6 +1118,8 @@ function startEdit(r){
   EDIT={id:r.id,uid:r.uid,room:r.room};
   state={};remarks={};photos={};oldPhotos={};started=null;
   ITEMS.forEach(i=>state[i.id]="P");
+  setMaint(r.maint);
+  (r.na||[]).forEach(x=>{if(BYID[x.id])state[x.id]="N"});
   r.defects.forEach(d=>{state[d.id]="F";remarks[d.id]=d.remark||"";if(d.photo)oldPhotos[d.id]=d.photo});
   $("#f-date").value=r.date;$("#f-prop").value=r.prop;if($("#f-prop").value!==r.prop){$("#f-prop").append(new Option(r.prop,r.prop));$("#f-prop").value=r.prop}
   $("#f-room").value=r.room;$("#f-sup").value=r.sup;$("#f-att").value=r.att;$("#f-sign").value=r.sign||"";sigDraw(r.signature);
@@ -1083,7 +1136,7 @@ async function saveEdit(base){
   const btn=$("#save");btn.disabled=true;
   try{const rec={...base,defects:[...base.defects,...(EDIT.keep||[])]};
     await uploadPhotos(rec,EDIT.uid);
-    const row=toRow({...rec,uid:EDIT.uid});delete row.uid;delete row.duration_sec;
+    const row=toRow({...rec,uid:EDIT.uid});delete row.uid;delete row.duration_sec;row.na=(rec.na||[]).map(x=>({id:x.id||x}));row.maint=rec.maint||null;
     const {error}=await sb.from("inspections").update(row).eq("id",EDIT.id);
     if(error)throw error;toast(t("Changes saved"));exitEdit();await refresh();show("log")}
   catch(e){toast(t("Could not save changes")+": "+(e.message||e))}
@@ -1145,6 +1198,8 @@ $("#saveNames").onclick=async()=>{if(!IS_ADMIN())return;
 /* ---------- defect report text ---------- */
 function report(rec){
   const L=[`${t("ROOM INSPECTION")} — ${rec.prop}`,`${t("Room")} ${rec.room} · ${rec.date}`,`${t("Score")} ${rec.score}/100 · ${t(rec.status)}`,`${t("Supervisor")}: ${rec.sup} · ${t("Attendant")}: ${rec.att}`,""];
+  if(rec.na&&rec.na.length)L.push("Not applicable: "+rec.na.length+" item(s)");
+  if(rec.maint)L.push("Maintenance"+(rec.maint.priority==="urgent"?" (URGENT)":"")+": "+maintText(rec.maint));
   if(!rec.defects.length)L.push(t("No defects."));else{L.push(`${t("Defects")} (${rec.defects.length}):`);
     rec.defects.forEach((d,n)=>{const i=IT(d.id);L.push(`${n+1}. [${secName(i.sec,i.secAr)}] ${itName(i)}${d.remark?" — "+d.remark:""}`)})}
   return L.join("\n")}
@@ -1152,6 +1207,7 @@ async function copy(txt){try{await navigator.clipboard.writeText(txt);toast(t("C
 function sheetRec(){const v=f=>$("#f-"+f).value.trim();const {score}=calc(state);
   return{prop:v("prop"),room:v("room")||"-",date:v("date"),sup:v("sup"),att:v("att"),sign:v("sign"),signature:sigData,score,status:statusOf(score)[0],
     duration_sec:null,
+    na:ITEMS.filter(i=>state[i.id]==="N").map(i=>({id:i.id})),maint:maintOut(),
     defects:ITEMS.filter(i=>state[i.id]==="F").map(i=>({id:i.id,remark:remarks[i.id]||"",photoData:photos[i.id],photo:oldPhotos[i.id]}))}}
 $("#copyRep").onclick=()=>copy(report(sheetRec()));
 $("#pdfSheet").onclick=()=>{const {checked}=calc(state);if(!checked)return toast(t("Mark the checklist first"));printReport(sheetRec())};
@@ -1176,9 +1232,10 @@ function renderLog(){
     s.append(rm,el("span","muted",r.prop+" · "+r.date),el("span","badge "+statusOf(r.score)[1],t(r.status)));
     if(isOpen(r))s.append(el("span","tag open",t("Open")));else if(r.score<95&&r.closed_at)s.append(el("span","tag closed",t("Closed")));
     if(r.updated_at)s.append(el("span","tag edited",t("Edited")));
+    if(r.maint)s.append(el("span","tag "+(isMaintOpen(r)?(r.maint.priority==="urgent"?"urgent":"maint"):"closed"),isMaintOpen(r)?(r.maint.priority==="urgent"?"Maintenance · urgent":"Maintenance"):"Maintenance fixed"));
     s.append(el("span","sc mono",r.score+"/100"));d.append(s);
     const info=[`${t("Supervisor")}: ${r.sup}`,`${t("Attendant")}: ${r.att}`];if(r.sign)info.push(t("Signed")+": "+r.sign);
-    if(r.duration_sec!=null)info.push(t("Time")+": "+fmtDur(r.duration_sec));if(r.by)info.push(t("Entered by")+": "+r.by);
+    if(r.duration_sec!=null)info.push(t("Time")+": "+fmtDur(r.duration_sec));if(r.na&&r.na.length)info.push("N/A: "+r.na.length);if(r.maint)info.push("Maintenance: "+maintText(r.maint));if(r.by)info.push(t("Entered by")+": "+r.by);
     d.append(el("div","muted",info.join(" · ")));
     if(r.closed_at)d.append(el("div","muted",t("Closed")+": "+new Date(r.closed_at).toLocaleString()+(r.close_note?" · "+t(r.close_note):"")));
     if(r.updated_at)d.append(el("div","muted",t("Last edited")+": "+new Date(r.updated_at).toLocaleString()+(r.editedBy?" · "+r.editedBy:"")));
@@ -1194,6 +1251,7 @@ function renderLog(){
     const a=el("div","rowbtns");
     const mk=(lab,fn,cls)=>{const b=el("button","btn sm"+(cls?" "+cls:""),t(lab));b.type="button";b.onclick=fn;a.append(b);return b};
     mk("PDF report",()=>printReport(r));mk("Copy report",()=>copy(report(r)));mk("Room history",()=>roomHistory(r.prop,r.room));mk("Edit",()=>startEdit(r));
+    if(r.maint)mk(r.maint_fixed_at?"Reopen maintenance":"Maintenance fixed",()=>setMaintFixed(r));
     if(r.score<95)mk(r.closed_at?"Reopen":"Close",async()=>{
       const patch=r.closed_at?{closed_at:null,closed_by:null,close_note:null}:{closed_at:new Date().toISOString(),close_note:"Closed by admin"};
       const {error}=await sb.from("inspections").update(patch).eq("id",r.id);if(error)return toast(t("Could not save")+": "+error.message);
@@ -1239,7 +1297,7 @@ async function printReport(r){
   const head=el("div","rp-head");const l=el("div");{const lg=el("img","rp-logo");lg.src=RP_LOGO;lg.alt="Address Beach Resort";l.append(lg)}l.append(el("small",null,"ADDRESS BEACH RESORT MARASSI · "+t("ROOM INSPECTION REPORT")),el("h1",null,t("Room")+" "+r.room+" · "+r.prop));
   const sc=el("div","rp-score");sc.append(el("b",null,String(r.score)),el("span",null,"/100 · "+t(r.status||statusOf(r.score)[0])));head.append(l,sc);R.append(head);
   const meta=el("div","rp-meta");const info=roomInfo(r.prop,r.room);
-  [[t("Date"),r.date],[t("Supervisor"),r.sup],[t("Room Attendant"),r.att],[t("Defects"),String(r.defects.length)]]
+  [[t("Date"),r.date],[t("Supervisor"),r.sup],[t("Room Attendant"),r.att],[t("Defects"),String(r.defects.length)],["Not applicable",String((r.na||[]).length)]]
     .forEach(([k,v])=>{const c=el("div");c.append(el("span",null,k),el("b",null,v||"—"));meta.append(c)});R.append(meta);
   if(r.defects.length){R.append(el("h2",null,t("Defects to fix")));const box=el("div","defs");
     r.defects.forEach((d,n)=>{const i=IT(d.id);const c=el("div","def");const tx=el("div");
@@ -1247,10 +1305,14 @@ async function printReport(r){
       const src=d.photoData||urls[d.photo];if(src){const im=el("img");im.src=src;c.append(im)}c.append(tx);box.append(c)});R.append(box)}
   R.append(el("h2",null,t("Full checklist")));
   const tb=el("table");const hr=el("tr");[t("Item"),t("Pts"),t("Result")].forEach(h=>hr.append(el("th",null,h)));tb.append(hr);
-  const failed=new Set(r.defects.map(d=>d.id));
+  const failed=new Set(r.defects.map(d=>d.id)),nas=new Set((r.na||[]).map(x=>x.id));
   SECS.forEach(s=>{const sr=el("tr","sect"),td=el("td",null,secName(s.name,s.ar));td.colSpan=3;sr.append(td);tb.append(sr);
-    s.items.forEach(i=>{const f=failed.has(i.id),tr=el("tr",f?"f":null);tr.append(el("td",null,itName(i)),el("td","p",String(i.p)),el("td","r "+(f?"x":"ok"),f?"✗":"✓"));tb.append(tr)})});
+    s.items.forEach(i=>{const f=failed.has(i.id),n=nas.has(i.id),tr=el("tr",f?"f":n?"n":null);
+      tr.append(el("td",null,itName(i)),el("td","p",String(i.p)),el("td","r "+(f?"x":n?"na":"ok"),f?"✗":n?"N/A":"✓"));tb.append(tr)})});
   R.append(tb);
+  if(r.maint){R.append(el("h2",null,"Maintenance"+(r.maint.priority==="urgent"?" · URGENT":"")));const m=el("div","mt");
+    m.append(el("b",null,(r.maint.items||[]).map(mName).join(", ")||"—"));if(r.maint.note)m.append(el("div",null,r.maint.note));
+    if(r.maint_fixed_at)m.append(el("div","rp-sub","Fixed: "+new Date(r.maint_fixed_at).toLocaleString()));R.append(m)}
   const sgn=el("div","sig");const a=el("div");a.append(el("div","muted",t("Attendant acknowledgement")));
   if(r.signature){const im=el("img");im.src=r.signature;a.append(im)}a.append(el("div",null,r.sign||r.att||""));
   const b=el("div");b.append(el("div","muted",t("Supervisor")),el("div",null,r.sup||""));sgn.append(a,b);R.append(sgn);
@@ -1295,6 +1357,7 @@ document.querySelectorAll("#db-chips button").forEach(b=>b.onclick=()=>{
   else if(b.dataset.r==="7"){f=addDays(t,-6);to=t}
   else if(b.dataset.r==="30"){f=addDays(t,-29);to=t}
   else if(b.dataset.r==="month"){f=t.slice(0,8)+"01";to=t}
+  else if(b.dataset.r==="ytd"){f=t.slice(0,4)+"-01-01";to=t}
   $("#db-from").value=f;$("#db-to").value=to;
   document.querySelectorAll("#db-chips button").forEach(x=>x.classList.toggle("on",x===b));dashboard()});
 ["from","to"].forEach(f=>$("#db-"+f).addEventListener("input",()=>document.querySelectorAll("#db-chips button").forEach(x=>x.classList.remove("on"))));
@@ -1454,7 +1517,8 @@ function dashboard(){
    [Math.round(S.ready)+"%","Ready first time",delta(S.ready,P&&P.ready," pts",true,0)],
    [S.reclean,"Re-clean rooms",delta(S.reclean,P&&P.reclean,"",false,0)],
    [S.dpr.toFixed(1),"Defects per room",delta(S.dpr,P&&P.dpr,"",false,1)],
-   [openAll.length,"Open rooms",el("small",openAll.length?"down":"up",t(openAll.length?"Waiting for re-inspection":"Nothing waiting"))]
+   [openAll.length,"Open rooms",el("small",openAll.length?"down":"up",t(openAll.length?"Waiting for re-inspection":"Nothing waiting"))],
+   [LOG.filter(isMaintOpen).length,"Open maintenance",el("small",LOG.filter(isMaintOpen).length?"down":"up",LOG.filter(r=>isMaintOpen(r)&&r.maint.priority==="urgent").length+" urgent")]
   ].forEach(([v,l,d])=>{const c=el("div","kpi");c.append(el("b","mono",String(v)),el("span",null,t(l)),d);k.append(c)});
   box.append(k);
 
@@ -1495,8 +1559,10 @@ function dashboard(){
 
   /* score by area */
   const ap=panel(t("Score by area"),t("Average % of points kept · line = 95% target"));
-  SECS.forEach(sec=>{const mx=sec.items.reduce((a,x)=>a+x.p,0);if(!mx)return;
-    const got=avg(rows.map(r=>{const f=new Set(r.defects.map(d=>d.id));return sec.items.reduce((b,x)=>b+(f.has(x.id)?0:x.p),0)}));
+  SECS.forEach(sec=>{let G=0,M=0,used=0;
+    rows.forEach(r=>{const f=new Set(r.defects.map(d=>d.id)),n=new Set((r.na||[]).map(x=>x.id));let g=0,m=0;
+      sec.items.forEach(x=>{if(n.has(x.id))return;m+=x.p;if(!f.has(x.id))g+=x.p});if(m){G+=g;M+=m;used++}});
+    if(!M)return;const got=G/used,mx=M/used;
     const pc=got/mx*100,nm=secName(sec.name,sec.ar);ap.append(hbar(nm,null,pc,Math.round(pc)+"%",[Math.round(pc)+"% "+t("of points kept"),nm+" · "+got.toFixed(1)+" / "+mx+" "+t("pts")],null,95))});
   grid.append(ap);
 
@@ -1525,6 +1591,9 @@ function dashboard(){
     return[b,fmtDay(r.date),r.att,r.score,sBadge(r.score)]}),[3]));
   grid.append(np);
 
+  /* maintenance */
+  grid.append(maintPanel(rows));
+
   /* monthly ranking */
   grid.append(rankingPanel(propSel));
 
@@ -1552,6 +1621,69 @@ function rankingPanel(propSel){
   ex.onclick=()=>{if(!list.length)return toast(t("Nothing to export"));
     dl("Attendant_Ranking_"+RANK_MONTH+".csv",csv([["Rank","Attendant","Inspections","Average score","Ready %","Defects"],...list.map((x,i)=>[i+1,x.k,x.n,x.avg.toFixed(1),Math.round(x.ready),x.def])]),"text/csv;charset=utf-8")};
   return p}
+/* ---------- maintenance report (Admin) ---------- */
+async function setMaintFixed(r){const patch={maint_fixed_at:r.maint_fixed_at?null:new Date().toISOString()};
+  const {error}=await sb.from("inspections").update(patch).eq("id",r.id);if(error)return toast(t("Could not save")+": "+error.message);
+  r.maint_fixed_at=patch.maint_fixed_at;toast(r.maint_fixed_at?"Maintenance marked fixed":"Maintenance reopened");
+  if(!$("#v-log").hidden)renderLog();if(!$("#v-dash").hidden)renderDash()}
+const maintRows=rows=>rows.filter(r=>r.maint);
+function maintPanel(rows){
+  const p=panel("Maintenance","Issues raised during inspections in this range",true);
+  const all=maintRows(rows),open=all.filter(isMaintOpen),urgent=open.filter(r=>r.maint.priority==="urgent"),fixed=all.filter(r=>r.maint_fixed_at);
+  const days=fixed.map(r=>(new Date(r.maint_fixed_at)-new Date(r.ts||r.date))/864e5).filter(x=>x>=0);
+  const st=el("div","hstats");
+  [[all.length,"Raised"],[open.length,"Open"],[urgent.length,"Urgent open"],[days.length?avg(days).toFixed(1)+" d":"—","Avg time to fix"]]
+    .forEach(([v,l])=>{const c=el("div");c.append(el("b",null,String(v)),el("span",null,l));st.append(c)});p.append(st);
+  const bar=el("div","mbtns");const bx=el("button","btn sm","Excel report"),bp=el("button","btn sm","PDF report");bx.type=bp.type="button";
+  bx.onclick=()=>maintExcel(all);bp.onclick=()=>maintPdf(all);bar.append(bx,bp);p.append(bar);
+  if(!all.length){p.append(el("div","dempty","No maintenance issues in this range."));return p}
+  const cnt={};all.forEach(r=>(r.maint.items||[]).forEach(i=>cnt[i]=(cnt[i]||0)+1));
+  const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]);
+  if(top.length){p.append(el("h3",null,"By category"));const mx=top[0][1];
+    top.forEach(([id,n])=>{const o=all.filter(r=>isMaintOpen(r)&&(r.maint.items||[]).includes(id)).length;
+      p.append(hbar(mName(id),o+" open",n/mx*100,String(n),[n+" issues · "+o+" open",mName(id)],"coral"))})}
+  p.append(el("h3",null,"Open issues"));
+  const list=open.slice().sort((a,b)=>(b.maint.priority==="urgent")-(a.maint.priority==="urgent")||a.date.localeCompare(b.date));
+  if(!list.length)p.append(el("div","dempty","No open maintenance issues."));
+  else p.append(table(["Room","Date","Issue","Priority","Age","Action"],list.slice(0,30).map(r=>{
+    const rb=el("button","linkbtn",r.room);rb.type="button";rb.onclick=()=>roomHistory(r.prop,r.room);
+    const fx=el("button","btn sm","Fixed");fx.type="button";fx.onclick=()=>setMaintFixed(r);
+    return[rb,fmtDay(r.date),maintText(r.maint),r.maint.priority==="urgent"?el("span","tag urgent","Urgent"):"Normal",dayDiff(r.date,today())+" days",fx]}),[]));
+  return p}
+function maintExcel(list){if(!list.length)return toast("No maintenance issues to export");
+  dl("Maintenance_Report_"+today()+".csv",csv([["Date","Property","Room","Categories","Note","Priority","Status","Fixed on","Supervisor","Attendant","Score"],
+    ...list.map(r=>[r.date,r.prop,r.room,(r.maint.items||[]).map(mName).join("; "),r.maint.note||"",r.maint.priority,r.maint_fixed_at?"Fixed":"Open",
+      r.maint_fixed_at?new Date(r.maint_fixed_at).toLocaleDateString():"",r.sup,r.att,r.score])]),"text/csv;charset=utf-8")}
+async function maintPdf(list){if(!list.length)return toast("No maintenance issues to export");
+  const A=$("#print-area");A.innerHTML="";const R=el("div","rp");A.append(R);
+  const head=el("div","rp-head");const l=el("div");l.append(el("small",null,(document.querySelector(".eyebrow")||{}).textContent||"Housekeeping"),el("h1",null,"Maintenance report"));
+  const sc=el("div","rp-score");sc.append(el("b",null,String(list.filter(isMaintOpen).length)),el("span",null,"open of "+list.length));head.append(l,sc);R.append(head);
+  const f=$("#db-from").value,to=$("#db-to").value;R.append(el("p",null,"Period: "+(f||"…")+" → "+(to||"…")+" · Generated "+new Date().toLocaleString()));
+  const tb=el("table");const hr=el("tr");["Date","Room","Issue","Priority","Status","Supervisor"].forEach(h=>hr.append(el("th",null,h)));tb.append(hr);
+  list.slice().sort((a,b)=>isMaintOpen(b)-isMaintOpen(a)||a.date.localeCompare(b.date)).forEach(r=>{const tr=el("tr",isMaintOpen(r)&&r.maint.priority==="urgent"?"f":null);
+    [r.date,r.room,maintText(r.maint),r.maint.priority==="urgent"?"Urgent":"Normal",r.maint_fixed_at?"Fixed "+new Date(r.maint_fixed_at).toLocaleDateString():"Open",r.sup].forEach(v=>tr.append(el("td",null,v)));tb.append(tr)});
+  R.append(tb);
+  document.body.classList.add("printing");const done=()=>{document.body.classList.remove("printing");removeEventListener("afterprint",done);removeEventListener("pointerdown",done)};
+  addEventListener("afterprint",done);setTimeout(()=>{window.print();addEventListener("pointerdown",done)},60)}
+
+/* ---------- dashboard Excel summary ---------- */
+$("#dashXls").onclick=()=>{const rows=filtered("db");if(!rows.length)return toast("Nothing to export");
+  const f=$("#db-from").value,to=$("#db-to").value,O=[];
+  O.push(["Inspection summary",(document.querySelector(".eyebrow")||{}).textContent||""]);O.push(["Period",(f||"…")+" to "+(to||"…")]);O.push([]);
+  const ready=rows.filter(r=>r.score>=95).length;
+  O.push(["KPI","Value"]);[["Inspections",rows.length],["Average score",avg(rows.map(r=>r.score)).toFixed(1)],["Ready first time %",Math.round(ready/rows.length*100)],
+    ["Re-clean rooms",rows.filter(r=>r.score<85).length],["Defects per room",avg(rows.map(r=>r.fails)).toFixed(1)],["Open rooms",rows.filter(isOpen).length],
+    ["Open maintenance",rows.filter(isMaintOpen).length]].forEach(x=>O.push(x));O.push([]);
+  O.push(["Area","Average % of points kept"]);
+  SECS.forEach(sec=>{let G=0,M=0;rows.forEach(r=>{const fa=new Set(r.defects.map(d=>d.id)),n=new Set((r.na||[]).map(x=>x.id));sec.items.forEach(x=>{if(n.has(x.id))return;M+=x.p;if(!fa.has(x.id))G+=x.p})});
+    if(M)O.push([sec.name,Math.round(G/M*100)])});O.push([]);
+  const cnt={};rows.forEach(r=>r.defects.forEach(d=>cnt[d.id]=(cnt[d.id]||0)+1));
+  O.push(["Most repeated defects","Count","% of inspections"]);Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,10).forEach(([id,n])=>O.push([IT(id).t,n,Math.round(n/rows.length*100)]));O.push([]);
+  O.push(["Room attendant","Inspections","Average score","Ready %","Defects"]);people(rows,"att").forEach(p=>O.push([p.k,p.n,p.avg.toFixed(1),Math.round(p.ready),p.def]));O.push([]);
+  O.push(["Supervisor","Inspections","Average score","Ready %","Defects"]);people(rows,"sup").forEach(p=>O.push([p.k,p.n,p.avg.toFixed(1),Math.round(p.ready),p.def]));O.push([]);
+  O.push(["Maintenance","Date","Room","Issue","Priority","Status"]);maintRows(rows).forEach(r=>O.push(["",r.date,r.room,maintText(r.maint),r.maint.priority,r.maint_fixed_at?"Fixed":"Open"]));
+  dl("Inspection_Summary_"+(f||"start")+"_to_"+(to||today())+".csv",csv(O),"text/csv;charset=utf-8")};
+
 $("#dashPdf").onclick=()=>{document.body.classList.add("pdash");const done=()=>{document.body.classList.remove("pdash");removeEventListener("afterprint",done)};
   addEventListener("afterprint",done);setTimeout(()=>window.print(),50)};
 
@@ -1675,8 +1807,8 @@ const q=v=>{v=v==null?"":String(v);if(/^[=+\-@]/.test(v))v="'"+v;return /[",\n]/
 const csv=rows=>"﻿"+rows.map(r=>r.map(q).join(",")).join("\r\n");
 $("#expCsv").onclick=()=>{if(!LOG.length)return toast(t("Nothing to export"));
   const head=["Date","Property","Room","Supervisor","Attendant","Signed","Score","Status","Defects","Open","Closed note",...ITEMS.map(i=>i.sec+" | "+i.t+" ("+i.p+")")];
-  const rows=LOG.map(r=>{const f=new Set(r.defects.map(d=>d.id)),ri=roomInfo(r.prop,r.room)||{};
-    return[r.date,r.prop,r.room,r.sup,r.att,r.sign,r.score,r.status,r.fails,isOpen(r)?"Yes":"No",r.close_note,...ITEMS.map(i=>f.has(i.id)?"✗":"✓")]});
+  const rows=LOG.map(r=>{const nas=new Set((r.na||[]).map(x=>x.id)),f=new Set(r.defects.map(d=>d.id)),ri=roomInfo(r.prop,r.room)||{};
+    return[r.date,r.prop,r.room,r.sup,r.att,r.sign,r.score,r.status,r.fails,isOpen(r)?"Yes":"No",r.close_note,...ITEMS.map(i=>f.has(i.id)?"✗":nas.has(i.id)?"N/A":"✓")]});
   dl("Room_Inspections_"+today()+".csv",csv([head,...rows]),"text/csv;charset=utf-8")};
 $("#expDef").onclick=()=>{const rows=[];LOG.forEach(r=>r.defects.forEach(d=>{const i=IT(d.id);rows.push([r.date,r.prop,r.room,r.sup,r.att,i.sec,i.t,i.ta,d.p||i.p,d.remark,d.photo?"Yes":""])}));
   if(!rows.length)return toast(t("No defects to export"));
@@ -1740,10 +1872,13 @@ document.addEventListener("visibilitychange",()=>{if(document.visibilityState===
 
 
 
+try{localStorage.removeItem("ri_fullscreen");if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen()}catch(err){}
+/* ---------- refresh: newest app version + data ---------- */
 $("#refBtn").onclick=async e=>{const b=e.currentTarget;b.disabled=true;b.textContent="⟳ Refreshing…";saveDraft();
   try{await Promise.race([flush(),new Promise(ok=>setTimeout(ok,6000))])}catch(err){}
   location.replace(location.pathname+"?v="+Date.now()+location.hash)};
 if(/[?&]v=\d+/.test(location.search))history.replaceState(null,"",location.pathname+location.hash);
+{const t0=today();$("#db-from").value=t0.slice(0,4)+"-01-01";$("#db-to").value=t0}
 applyLang();fillSelects();buildForm();fillNames();loadDraft();boot();
 
 </script>
