@@ -523,12 +523,6 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgb(11 127 130/.15)
 .ustat.on{color:var(--pass)}.ustat.off{color:var(--fail)}
 .dlgform{display:grid;gap:12px;margin:12px 0}
 .uhint{font-size:.78rem}
-
-body:not(.is-owner) .owner-only{display:none!important}
-
-/* hotel name a little bigger */
-header .eyebrow{font-size:1.15rem;letter-spacing:.12em;font-weight:700;line-height:1.3}
-@media (max-width:480px){header .eyebrow{font-size:.95rem;letter-spacing:.08em}}
 </style>
 </head>
 <body>
@@ -718,7 +712,7 @@ header .eyebrow{font-size:1.15rem;letter-spacing:.12em;font-weight:700;line-heig
         <button class="btn" id="expDef" type="button" data-t="Export defects (CSV)">Export defects (CSV)</button>
         <button class="btn" id="expJson" type="button" data-t="Export backup">Export backup</button>
         <label class="btn" style="display:inline-block"><span data-t="Import backup">Import backup</span><input type="file" id="impJson" accept=".json,application/json" hidden multiple></label>
-        <button class="btn danger owner-only" id="wipe" type="button" data-t="Delete all inspections">Delete all inspections</button>
+        <button class="btn danger" id="wipe" type="button" data-t="Delete all inspections">Delete all inspections</button>
       </div>
     </div>
 
@@ -1098,7 +1092,7 @@ function show(v){
   document.querySelectorAll(".view").forEach(s=>s.hidden=s.id!=="v-"+v);
   document.body.classList.toggle("wide",v==="dash"||v==="log");
   if(v==="log")renderLog();if(v==="dash")renderDash();if(v==="set")renderSettings();window.scrollTo(0,0)}
-function showLogin(msg){$("#toast").classList.remove("on");ME=null;ROLE="user";LOG=[];IS_OWNER=false;document.body.classList.remove("authed","is-admin","is-owner");showPending();show("login");loginErr(msg)}
+function showLogin(msg){$("#toast").classList.remove("on");ME=null;ROLE="user";LOG=[];document.body.classList.remove("authed","is-admin");showPending();show("login");loginErr(msg)}
 function setAcct(){$("#acct").textContent=t("Signed in as")+" "+MYNAME+" ("+ME.email+") · "+t("Role")+": "+t(IS_ADMIN()?"Admin":"User")}
 async function enter(user){
   ME=user;let prof=load(K.prof,null);if(!prof||prof.id!==user.id)prof=null;
@@ -1106,8 +1100,6 @@ async function enter(user){
   if(data){prof={id:user.id,...data};store(K.prof,prof)}
   ROLE=prof&&prof.role==="admin"?"admin":"user";MYNAME=(prof&&prof.full_name)||user.email;
   document.body.classList.add("authed");document.body.classList.toggle("is-admin",IS_ADMIN());setAcct();
-  IS_OWNER=false;document.body.classList.remove("is-owner");
-  if(IS_ADMIN())sb.rpc("is_owner").then(({data})=>{IS_OWNER=data===true;document.body.classList.toggle("is-owner",IS_OWNER)});
   $("#upLegacy").hidden=!(IS_ADMIN()&&LEGACY.length);
   if(!IS_ADMIN()&&!$("#f-sup").value){$("#f-sup").value=MYNAME;saveDraft()}
   showPending();show("inspect");loadSetup();loadNames();flush();if(IS_ADMIN())refresh()}
@@ -1689,8 +1681,7 @@ $("#impJson").onchange=async e=>{if(!IS_ADMIN())return;const recs=[];
   try{const n=await upload(recs);toast(n+" "+t("inspections uploaded · duplicates skipped"));refresh()}catch(err){toast(t("Upload failed")+": "+err.message)}};
 $("#upLegacy").onclick=async()=>{try{const n=await upload(LEGACY);toast(n+" "+t("old inspections uploaded · duplicates skipped"));refresh()}catch(err){toast(t("Upload failed")+": "+err.message)}};
 $("#refresh").onclick=async()=>{await loadSetup();await refresh();toast(LOG.length+" "+t("inspections loaded"))};
-let IS_OWNER=false;
-$("#wipe").onclick=e=>arm(e.currentTarget,async()=>{if(!IS_OWNER)return toast("Only the owner can delete all inspections");const {error}=await sb.from("inspections").delete().not("id","is",null);
+$("#wipe").onclick=e=>arm(e.currentTarget,async()=>{if(!IS_ADMIN())return;const {error}=await sb.from("inspections").delete().not("id","is",null);
   if(error)return toast(t("Delete failed")+": "+error.message);LOG=[];renderLog();toast(t("All inspections deleted from the database"))},t("Tap again: delete ALL inspections"));
 
 /* ---------- tabs, install, start ---------- */
