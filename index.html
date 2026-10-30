@@ -451,6 +451,78 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgb(11 127 130/.15)
 .llogo{display:block;height:58px;width:auto;margin:4px auto 16px}
 @media (prefers-color-scheme:dark){.llogo{filter:invert(1)}}
 .rp-logo{display:block;height:34px;width:auto;margin-bottom:6px}
+
+.refbtn{position:absolute;top:calc(14px + env(safe-area-inset-top));inset-inline-end:max(16px,env(safe-area-inset-right));font:600 .78rem/1 inherit;color:#fff;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.3);border-radius:999px;padding:7px 12px;cursor:pointer}
+.refbtn:hover{background:rgb(255 255 255/.24)}.refbtn[disabled]{opacity:.6;cursor:wait}
+
+/* ---- notifications bell (Admin) ---- */
+.hbtns{position:absolute;top:calc(14px + env(safe-area-inset-top));inset-inline-end:max(16px,env(safe-area-inset-right));display:flex;gap:8px;align-items:center;z-index:6}
+.hbtns .refbtn{position:static}
+.bellbtn{position:relative;font:600 .95rem/1 inherit;color:#fff;background:rgb(255 255 255/.14);border:1px solid rgb(255 255 255/.3);border-radius:999px;width:36px;height:30px;cursor:pointer;padding:0}
+.bellbtn:hover{background:rgb(255 255 255/.24)}
+.bellbtn b{position:absolute;top:-6px;inset-inline-end:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#d93a2f;color:#fff;font-size:.68rem;line-height:18px;text-align:center;box-shadow:0 0 0 2px rgb(255 255 255/.85)}
+.bellbtn b:empty{display:none}
+.bellpanel{position:absolute;top:44px;inset-inline-end:0;width:min(360px,calc(100vw - 32px));max-height:min(70vh,520px);overflow:auto;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 40px rgb(0 0 0/.25);text-align:start}
+.bellpanel[hidden]{display:none}
+.bellhead{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface)}
+.bellhead b{font-size:.95rem}
+.bellhead button{all:unset;cursor:pointer;color:var(--accent);font-size:.78rem;font-weight:700}
+.bellitem{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.bellitem:hover{background:var(--accent-soft)}
+.bellitem.new{background:color-mix(in srgb,var(--accent-soft) 70%,transparent)}
+.bellitem i{grid-row:1/3;width:10px;height:10px;border-radius:50%;margin-top:5px;background:var(--muted)}
+.bellitem i.bad,.bellitem i.urgent{background:#c8423b}.bellitem i.warn,.bellitem i.maint{background:#e0a526}.bellitem i.good{background:#2b7a4b}
+.bellitem span{font-size:.86rem;font-weight:600}
+.bellitem small{font-size:.74rem;color:var(--muted)}
+.bellempty{padding:24px 14px;text-align:center;color:var(--muted);font-size:.86rem}
+.bellperm{margin:10px 14px;font-size:.78rem}
+@media (max-width:640px){.hbtns{position:relative;top:auto;inset-inline-end:auto;justify-content:flex-end;margin:0 0 8px}}
+
+/* ---- pro charts ---- */
+.spark{display:block;margin-top:8px;width:100%;height:30px}
+.spark .sl{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.spark .sa{fill:var(--accent);opacity:.1}
+.spark .sd{fill:var(--accent)}
+.chart .vl{font-weight:700;fill:var(--fg)}
+.chart .bx.good{fill:var(--st-good)}.chart .bx.warn{fill:var(--st-warn)}.chart .bx.bad{fill:var(--st-bad)}
+.chart .lolli{stroke:var(--line2);stroke-width:2}
+.chart .dot{fill:var(--accent);stroke:var(--surface);stroke-width:2}
+.chart .dot.good{fill:var(--st-good)}.chart .dot.warn{fill:var(--st-warn)}.chart .dot.bad{fill:var(--st-bad)}
+.chart text.nm{fill:var(--fg);font-size:12px}
+.heat{width:100%;border-collapse:separate;border-spacing:3px;font-size:.78rem;background:transparent;border:0;box-shadow:none}
+.heat th,.heat td{border:0!important;padding:7px 6px!important;text-align:center!important;border-radius:6px;background:transparent}
+.heat th{font-size:.68rem;color:var(--muted)!important;background:transparent!important;text-transform:uppercase;letter-spacing:.06em}
+.heat td.rl{width:1%;text-align:start!important;font-weight:600;color:var(--fg);white-space:nowrap}
+.heat td.c{font-weight:700;font-variant-numeric:tabular-nums;cursor:default}
+.heatkey{display:flex;align-items:center;gap:8px;font-size:.74rem;color:var(--muted);margin-top:8px}
+.heatkey i{display:block;width:120px;height:8px;border-radius:4px;background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 10%,var(--surface)),var(--accent))}
+
+/* ---- desktop: use the full screen ---- */
+@media (min-width:1024px){
+  .wrap,body.wide .wrap{max-width:none;padding-left:32px;padding-right:32px}
+  .fields{grid-template-columns:repeat(5,1fr)}
+  nav.tabs{max-width:900px}
+  .dgrid{grid-template-columns:repeat(auto-fit,minmax(380px,1fr))}
+}
+@media (min-width:1024px){
+  .item>div:first-child{display:flex;align-items:center;gap:16px}
+  .item .pri{flex:1 1 auto}
+  .item .sec2{flex:0 1 auto;margin:0;text-align:end}
+}
+
+/* ---- user management ---- */
+.ufields{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;align-items:end;margin:6px 0 4px}
+.ulist td{vertical-align:middle}
+.ulist .uacts{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+.ulist .uacts .btn{flex:0 0 auto}
+.ulist tr.off td{opacity:.55}
+.urole{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.urole.admin{background:var(--coral-soft);color:var(--coral)}
+.urole.owner{background:var(--accent);color:#fff}
+.ustat{font-size:.72rem;font-weight:700}
+.ustat.on{color:var(--pass)}.ustat.off{color:var(--fail)}
+.dlgform{display:grid;gap:12px;margin:12px 0}
+.uhint{font-size:.78rem}
 </style>
 </head>
 <body>
@@ -461,6 +533,11 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgb(11 127 130/.15)
   <h1 data-t="Room Inspection Checklist">Room Inspection Checklist</h1>
   <div class="who" id="who"></div>
   <button class="langbtn" id="langBtn" type="button" hidden>عربي</button>
+  <div class="hbtns">
+    <button class="bellbtn admin-only" id="bellBtn" type="button" title="Notifications" aria-label="Notifications">🔔<b id="bellCount"></b></button>
+    <button class="refbtn" id="refBtn" type="button" title="Get the latest app version and data">⟳ Refresh</button>
+    <div class="bellpanel" id="bellPanel" hidden></div>
+  </div>
 </header>
 
 <!-- LOGIN -->
@@ -567,6 +644,19 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgb(11 127 130/.15)
   </div>
 
   <div class="admin-only">
+    <h2>Users</h2>
+    <div class="card" id="usersCard">
+      <p class="muted">Create logins and control who can use the app. Staff sign in with the username only (e.g. <b>ali</b>). Admins see Log, Dashboard and Settings.</p>
+      <div class="ufields">
+        <label class="f"><span>Username</span><input id="u-name" autocapitalize="none" spellcheck="false" placeholder="e.g. ali"></label>
+        <label class="f"><span>Full name</span><input id="u-full" placeholder="e.g. Ali Hassan"></label>
+        <label class="f"><span>Password</span><input id="u-pass" type="text" autocomplete="new-password" placeholder="min. 6 characters"></label>
+        <label class="f"><span>Role</span><select id="u-role"><option value="user">User</option><option value="admin">Admin</option></select></label>
+        <button class="btn primary" id="u-add" type="button">Add user</button>
+      </div>
+      <div id="userList" style="margin-top:14px"></div>
+    </div>
+
     <div hidden>
     <h2 data-t="Checklist">Checklist</h2>
     <div class="card">
@@ -926,7 +1016,7 @@ async function loadAll(){const out=[];
   return out}
 async function refresh(){if(!IS_ADMIN())return;
   try{LOG=(await loadAll()).map(fromRow)}catch(e){toast(t("Could not load inspections")+": "+(e.message||e));return}
-  if(!$("#v-log").hidden)renderLog();if(!$("#v-dash").hidden)renderDash()}
+  if(!$("#v-log").hidden)renderLog();if(!$("#v-dash").hidden)renderDash();bellUpdate()}
 async function loadNames(){const {data,error}=await sb.from("staff_names").select("kind,name");if(error||!data)return;
   NAMES={sup:[],att:[]};data.forEach(r=>{if(NAMES[r.kind])NAMES[r.kind].push(r.name)});NAMES.sup.sort();NAMES.att.sort();store(K.names,NAMES);fillNames()}
 async function loadSetup(){
@@ -1266,6 +1356,75 @@ function peopleTable(list,withTime){
   return table(h,list.slice(0,15).map(p=>{const row=[p.k,p.n,scoreCell(p.avg),Math.round(p.ready)+"%",p.def];if(withTime)row.push(fmtDur(p.time));return row}),withTime?[1,2,3,4,5]:[1,2,3,4])}
 
 
+
+/* ---------- pro charts ---------- */
+function spark(vals){const v=vals.filter(x=>x!=null);if(v.length<2)return null;const W=160,H=30,lo=Math.min(...v),hi=Math.max(...v),rg=hi-lo||1;
+  const pts=vals.map((x,i)=>x==null?null:[i/(vals.length-1)*(W-6)+3,H-4-(x-lo)/rg*(H-8)]).filter(Boolean);
+  const g=sv("svg",{viewBox:`0 0 ${W} ${H}`,class:"spark",preserveAspectRatio:"none","aria-hidden":"true"});
+  const d=pts.map((q,i)=>(i?"L":"M")+q[0].toFixed(1)+","+q[1].toFixed(1)).join("");
+  sv("path",{d:d+`L${pts[pts.length-1][0]},${H}L${pts[0][0]},${H}Z`,class:"sa"},g);sv("path",{d,class:"sl"},g);
+  const l=pts[pts.length-1];sv("circle",{cx:l[0],cy:l[1],r:2.8,class:"sd"},g);return g}
+function addSparks(box,pts){const cards=box.querySelectorAll(".kpi");if(!cards.length||pts.length<2)return;
+  const series=[pts.map(p=>p.rows.length),pts.map(p=>p.rows.length?avg(p.rows.map(r=>r.score)):null),pts.map(p=>p.rows.length?p.rows.filter(r=>r.score>=95).length/p.rows.length*100:null)];
+  series.forEach((v,i)=>{const s=spark(v);if(s&&cards[i])cards[i].append(s)})}
+const monthKey=d=>d.slice(0,7),monthLab=m=>new Date(m+"-15").toLocaleDateString(undefined,{month:"short"});
+function monthlyChart(rows,W){
+  const ms=[...new Set(rows.map(r=>monthKey(r.date)))].sort();if(ms.length<2)return null;
+  const H=230,L=34,R=44,T=22,B=40,iw=W-L-R,ih=H-T-B;const data=ms.map(m=>{const rs=rows.filter(r=>monthKey(r.date)===m);return{m,n:rs.length,a:avg(rs.map(r=>r.score))}});
+  const lo=Math.max(0,Math.min(80,Math.floor((Math.min(...data.map(d=>d.a))-5)/5)*5));const Y=v=>T+ih-(v-lo)/(100-lo)*ih;
+  const g=sv("svg",{viewBox:`0 0 ${W} ${H}`,width:W,height:H,class:"chart",role:"img","aria-label":"Average score by month"});
+  for(let v=lo;v<=100;v+=lo<60?20:5){sv("line",{x1:L,x2:L+iw,y1:Y(v),y2:Y(v),class:"gl"},g);sv("text",{x:L-6,y:Y(v)+4,"text-anchor":"end"},g).textContent=v}
+  if(95>=lo){sv("line",{x1:L,x2:L+iw,y1:Y(95),y2:Y(95),class:"ref good"},g);sv("text",{x:L+iw+4,y:Y(95)+3,class:"reft good"},g).textContent="Target"}
+  const slot=iw/data.length,bw=Math.min(46,slot*.6);
+  data.forEach((d,i)=>{const x=L+i*slot+(slot-bw)/2,y=Y(d.a),base=T+ih,r=Math.min(4,bw/2);const grp=sv("g",{},g);
+    sv("rect",{x:L+i*slot,y:T,width:slot,height:ih,class:"hit"},grp);
+    sv("path",{d:`M${x},${base}V${y+r}Q${x},${y} ${x+r},${y}H${x+bw-r}Q${x+bw},${y} ${x+bw},${y+r}V${base}Z`,class:"bx "+statusKey(d.a)},grp);
+    if(slot>=30){const vl=sv("text",{x:x+bw/2,y:y-6,"text-anchor":"middle",class:"vl"},grp);vl.textContent=slot>=44?d.a.toFixed(1):Math.round(d.a);if(slot<44)vl.setAttribute("font-size","9")}
+    sv("text",{x:L+i*slot+slot/2,y:slot>=56?H-22:H-12,"text-anchor":"middle"},g).textContent=monthLab(d.m);
+    if(slot>=56)sv("text",{x:L+i*slot+slot/2,y:H-8,"text-anchor":"middle"},g).textContent=d.n+" insp.";
+    hover(grp,[d.a.toFixed(1)+" average score",new Date(d.m+"-15").toLocaleDateString(undefined,{month:"long",year:"numeric"}),d.n+" inspections · "+t(STAT.find(s=>s[0]===statusKey(d.a))[1])])});
+  return g}
+function distChart(rows,W){
+  const bins=[["<80",r=>r.score<80,"bad"],["80–84",r=>r.score>=80&&r.score<85,"bad"],["85–89",r=>r.score>=85&&r.score<90,"warn"],["90–94",r=>r.score>=90&&r.score<95,"warn"],["95–99",r=>r.score>=95&&r.score<100,"good"],["100",r=>r.score===100,"good"]];
+  const H=210,L=34,R=12,T=22,B=26,iw=W-L-R,ih=H-T-B;const c=bins.map(b=>rows.filter(b[1]).length),mx=Math.max(1,...c),stp=mx<=10?2:mx<=50?10:mx<=200?20:50,nice=Math.ceil(mx/stp/2)*stp*2;
+  const Y=v=>T+ih-v/nice*ih;const g=sv("svg",{viewBox:`0 0 ${W} ${H}`,width:W,height:H,class:"chart",role:"img","aria-label":"Score distribution"});
+  [0,nice/2,nice].forEach(v=>{sv("line",{x1:L,x2:L+iw,y1:Y(v),y2:Y(v),class:"gl"},g);sv("text",{x:L-6,y:Y(v)+4,"text-anchor":"end"},g).textContent=Math.round(v)});
+  const slot=iw/bins.length,bw=Math.min(52,slot*.7);
+  bins.forEach((b,i)=>{const n=c[i],x=L+i*slot+(slot-bw)/2,y=Y(n),base=T+ih,r=Math.min(4,bw/2,base-y);const grp=sv("g",{},g);
+    sv("rect",{x:L+i*slot,y:T,width:slot,height:ih,class:"hit"},grp);
+    if(n)sv("path",{d:`M${x},${base}V${y+r}Q${x},${y} ${x+r},${y}H${x+bw-r}Q${x+bw},${y} ${x+bw},${y+r}V${base}Z`,class:"bx "+b[2]},grp);
+    sv("text",{x:x+bw/2,y:y-6,"text-anchor":"middle",class:"vl"},grp).textContent=n;
+    sv("text",{x:L+i*slot+slot/2,y:H-8,"text-anchor":"middle"},g).textContent=b[0];
+    hover(grp,[n+" inspections · "+Math.round(n/rows.length*100)+"%","Score "+b[0]+" · "+t(STAT.find(s=>s[0]===b[2])[1])])});
+  return g}
+function attendantChart(rows,W){
+  const list=people(rows,"att").filter(p=>p.k!=="—").slice(0,12);if(list.length<2)return null;
+  const rowH=30,T=8,B=24,L=Math.min(150,Math.max(90,W*.32)),R=46,H=T+B+list.length*rowH,iw=W-L-R;
+  const lo=Math.max(0,Math.min(80,Math.floor((Math.min(...list.map(p=>p.avg))-5)/5)*5)),X=v=>L+(v-lo)/(100-lo)*iw;
+  const g=sv("svg",{viewBox:`0 0 ${W} ${H}`,width:W,height:H,class:"chart",role:"img","aria-label":"Average score by room attendant"});
+  for(let v=lo;v<=100;v+=lo<60?20:5){sv("line",{x1:X(v),x2:X(v),y1:T,y2:H-B,class:"gl"},g);sv("text",{x:X(v),y:H-6,"text-anchor":"middle"},g).textContent=v}
+  if(95>=lo)sv("line",{x1:X(95),x2:X(95),y1:T,y2:H-B,class:"ref good"},g);
+  list.forEach((p,i)=>{const y=T+i*rowH+rowH/2,grp=sv("g",{},g);
+    sv("rect",{x:0,y:y-rowH/2,width:W,height:rowH,class:"hit"},grp);
+    const nm=sv("text",{x:L-10,y:y+4,"text-anchor":"end",class:"nm"},grp);nm.textContent=p.k.length>18?p.k.slice(0,17)+"…":p.k;
+    sv("line",{x1:X(lo),x2:X(p.avg),y1:y,y2:y,class:"lolli"},grp);sv("circle",{cx:X(p.avg),cy:y,r:6,class:"dot "+statusKey(p.avg)},grp);
+    sv("text",{x:X(p.avg)+11,y:y+4,class:"vl"},grp).textContent=p.avg.toFixed(1);
+    hover(grp,[p.avg.toFixed(1)+" average score",p.k+" · "+p.n+" inspections · Ready "+Math.round(p.ready)+"%"])});
+  return g}
+function heatmap(rows){
+  const ms=[...new Set(rows.map(r=>monthKey(r.date)))].sort().slice(-6);if(!ms.length)return null;
+  const tb=el("table","heat");const hr=el("tr");hr.append(el("th",null,"Area"));ms.forEach(m=>hr.append(el("th",null,monthLab(m))));tb.append(hr);
+  SECS.forEach(sec=>{const tr=el("tr");tr.append(el("td","rl",secName(sec.name,sec.ar)));
+    ms.forEach(m=>{const rs=rows.filter(r=>monthKey(r.date)===m);let G=0,M=0;
+      rs.forEach(r=>{const f=new Set(r.defects.map(d=>d.id)),n=new Set((r.na||[]).map(x=>x.id));sec.items.forEach(x=>{if(n.has(x.id))return;M+=x.p;if(!f.has(x.id))G+=x.p})});
+      const td=el("td","c");if(!M){td.textContent="—";td.style.color="var(--muted)"}else{const pc=G/M*100,lost=100-pc;
+        const k=Math.min(1,lost/10);td.textContent=Math.round(pc)+"%";td.style.background=`color-mix(in srgb,var(--st-bad) ${Math.round(6+k*70)}%,var(--surface))`;
+        td.style.color=k>.55?"#fff":"var(--fg)";hover(td,[Math.round(pc)+"% of points kept",secName(sec.name,sec.ar)+" · "+new Date(m+"-15").toLocaleDateString(undefined,{month:"long",year:"numeric"})+" · "+rs.length+" inspections"])}
+      tr.append(td)});tb.append(tr)});
+  const w=el("div","tablewrap");w.append(tb);const key=el("div","heatkey");key.append("100% kept",el("i"),"10%+ points lost");
+  key.querySelector("i").style.background="linear-gradient(90deg,color-mix(in srgb,var(--st-bad) 6%,var(--surface)),color-mix(in srgb,var(--st-bad) 76%,var(--surface)))";
+  const d=el("div");d.append(w,key);return d}
+
 function dashboard(){
   const box=$("#dash");box.innerHTML="";tipHide();
   const rows=filtered("db"),from=$("#db-from").value,to=$("#db-to").value,propSel=$("#db-prop").value;
@@ -1297,6 +1456,13 @@ function dashboard(){
     const CW=Math.max(260,box.clientWidth-34);
     const tp=panel(t("Average score over time"),t(weekly?"Weekly average":"Daily average"),true);tp.append(trendChart(pts,weekly,CW));grid.append(tp);
     const vp=panel(t("Inspections completed"),t(weekly?"Per week":"Per day"),true);vp.append(volumeChart(pts,weekly,CW));grid.append(vp)}
+  addSparks(box,pts);
+  {const CW=Math.max(260,box.clientWidth-34),HW=box.clientWidth>=760?Math.max(260,(box.clientWidth-12)/2-34):CW;
+    const mc=monthlyChart(rows,CW);if(mc){const mp=panel("Monthly performance","Average score by month · colour = status",true);mp.append(mc);grid.append(mp)}
+    const dp2=panel("Score distribution","Number of inspections in each score band");grid.append(dp2);dp2.append(distChart(rows,Math.max(240,dp2.clientWidth-34)));
+    if(people(rows,"att").filter(p=>p.k!=="—").length>1){const apn=panel("Attendant comparison","Average score · line = 95 target");grid.append(apn);
+      apn.append(attendantChart(rows,Math.max(240,apn.clientWidth-34)))}
+    const hm=heatmap(rows);if(hm){const hp=panel("Area heatmap","% of points kept by area and month · darker = more points lost",true);hp.append(hm);grid.append(hp)}}
 
   /* status split */
   const sp=panel(t("Room status"),t("Share of inspections"));const st=el("div","stack");const lg=el("div","legend");
@@ -1384,6 +1550,7 @@ $("#dashPdf").onclick=()=>{document.body.classList.add("pdash");const done=()=>{
 /* ---------- settings (Admin editors) ---------- */
 function renderSettings(){
   if(!IS_ADMIN())return;
+  loadUsers();
   $("#s-props").value=PROPS.join("\n");renderRooms();renderCle()}
 
 /* checklist editor */
@@ -1451,6 +1618,49 @@ $("#loadAudit").onclick=async()=>{const {data,error}=await sb.from("audit_log").
     return[new Date(a.at).toLocaleString(),a.actor_name||"—",t(a.action),a.room?(a.prop+" · "+a.room):"—",ch]}),[]);
   w.classList.add("audit-t");box.append(w)};
 
+
+/* ---------- user management (Admin) ---------- */
+const uName=e=>String(e||"").replace(/@inspect\.local$/i,"");
+const rpcErr=e=>/could not find the function|does not exist|schema cache/i.test(e.message||"")?"Run supabase_user_admin.sql in Supabase first":(e.message||String(e));
+let USERS=[];
+async function loadUsers(){const box=$("#userList");if(!box||!sb)return;
+  const {data,error}=await sb.rpc("admin_list_users");
+  if(error){box.innerHTML="";box.append(el("p","err",rpcErr(error)));return}
+  USERS=data||[];renderUsers()}
+function renderUsers(){const box=$("#userList");box.innerHTML="";
+  if(!USERS.length){box.append(el("p","empty","No users."));return}
+  const rows=USERS.map(u=>{const me=ME&&u.id===ME.id;
+    const role=el("span","urole "+(u.is_owner?"owner":u.role),u.is_owner?"Owner":u.role==="admin"?"Admin":"User");
+    const st=el("span","ustat "+(u.disabled?"off":"on"),u.disabled?"Disabled":"Active");
+    const acts=el("div","uacts");
+    const b=(lab,fn,cls)=>{const x=el("button","btn sm"+(cls?" "+cls:""),lab);x.type="button";x.onclick=fn;acts.append(x);return x};
+    if(u.is_owner&&!me){acts.append(el("span","muted uhint","🔒 Protected"))}
+    else{b("Edit",()=>userEdit(u));b("Password",()=>userPassword(u))}
+    if(!me&&!u.is_owner){b(u.disabled?"Enable":"Disable",()=>userActive(u,u.disabled));
+      const d=b("Delete",null,"danger");d.onclick=e=>arm(e.currentTarget,()=>userDelete(u),"Tap again: delete "+uName(u.email))}
+    const nm=el("span",null,(u.full_name||uName(u.email))+(me?" (you)":""));
+    return[nm,uName(u.email),role,st,u.last_sign_in_at?new Date(u.last_sign_in_at).toLocaleDateString():"Never",acts]});
+  const t=table(["Name","Username","Role","Status","Last sign-in",""],rows,[]);t.classList.add("ulist");
+  [...t.querySelectorAll("tr")].slice(1).forEach((tr,i)=>{if(USERS[i].disabled)tr.classList.add("off")});box.append(t)}
+async function userCall(fn,args,ok){const {error}=await sb.rpc(fn,args);if(error){toast(rpcErr(error));return false}toast(ok);await loadUsers();return true}
+$("#u-add").onclick=async e=>{const btn=e.currentTarget;const name=$("#u-name").value.trim(),full=$("#u-full").value.trim(),pw=$("#u-pass").value,role=$("#u-role").value;
+  if(!name)return toast("Enter a username");if(pw.length<6)return toast("Password must be at least 6 characters");
+  btn.disabled=true;const done=await userCall("admin_create_user",{p_username:name,p_password:pw,p_full_name:full,p_role:role},"User "+name.toLowerCase()+" created");btn.disabled=false;
+  if(done){$("#u-name").value=$("#u-full").value=$("#u-pass").value="";$("#u-role").value="user";}};
+function dlgForm(title,fields,saveLabel,onSave){const B=$("#dlgBody");B.innerHTML="";B.append(el("h3",null,title));
+  const f=el("div","dlgform");fields.forEach(x=>f.append(x));B.append(f);
+  const sv=el("button","btn primary",saveLabel);sv.type="button";sv.onclick=async()=>{sv.disabled=true;const ok=await onSave();sv.disabled=false;if(ok)$("#dlg").close()};
+  B.append(sv);$("#dlg").showModal()}
+function lab(text,input){const l=el("label","f");l.append(el("span",null,text),input);return l}
+function userEdit(u){const n=el("input");n.value=u.full_name||"";const r=el("select");[["user","User"],["admin","Admin"]].forEach(([v,t])=>r.append(new Option(t,v)));r.value=u.role;
+  if(u.is_owner)r.disabled=true;
+  dlgForm("Edit "+uName(u.email),[lab("Full name",n),lab("Role",r)].concat(u.is_owner?[el("p","muted uhint","Owner account: always Admin; nobody else can edit, disable or delete it.")]:[]),"Save",()=>userCall("admin_update_user",{p_id:u.id,p_full_name:n.value,p_role:r.value},"User updated"))}
+function userPassword(u){const pw=el("input");pw.type="text";pw.autocomplete="new-password";pw.placeholder="min. 6 characters";
+  const hint=el("p","muted uhint",ME&&u.id===ME.id?"Your new password works from your next sign-in.":"The user is signed out on all devices and must sign in with the new password.");
+  dlgForm("New password for "+uName(u.email),[lab("New password",pw),hint],"Set password",()=>pw.value.length<6?(toast("Password must be at least 6 characters"),false):userCall("admin_set_password",{p_id:u.id,p_password:pw.value},"Password changed"))}
+function userActive(u,on){return userCall("admin_set_active",{p_id:u.id,p_active:on},on?"User enabled":"User disabled · signed out everywhere")}
+function userDelete(u){return userCall("admin_delete_user",{p_id:u.id},"User deleted · their inspections are kept")}
+
 /* ---------- export / import ---------- */
 function dl(name,text,type){const b=new Blob([text],{type});const a=el("a");a.href=URL.createObjectURL(b);a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 const q=v=>{v=v==null?"":String(v);if(/^[=+\-@]/.test(v))v="'"+v;return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
@@ -1479,6 +1689,52 @@ document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>show(b.dat
 /* installable/offline app removed: clean up any copy installed earlier */
 if("serviceWorker" in navigator)navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{});
 if(window.caches)caches.keys().then(ks=>ks.filter(k=>k.startsWith("ri-")).forEach(k=>caches.delete(k))).catch(()=>{});
+
+/* ---------- notifications bell (Admin) ---------- */
+const bellKey=()=>"ri_bell_seen_"+(ME?ME.id:"");
+let bellKnown=null;
+function bellSeen(){const v=load(bellKey(),null);return v||new Date(Date.now()-864e5).toISOString()}
+function bellEvents(){const ev=[];
+  LOG.forEach(r=>{const at=r.ts||(r.date+"T00:00:00Z"),base={at,r};
+    if(r.score<85)ev.push({...base,key:r.id+":s",kind:"bad",text:"Room "+r.room+" · Re-clean "+r.score+"/100",sub:"Attendant "+r.att+" · "+r.sup});
+    else if(r.score<95)ev.push({...base,key:r.id+":s",kind:"warn",text:"Room "+r.room+" · Re-touch "+r.score+"/100",sub:"Attendant "+r.att+" · "+r.sup});
+    else ev.push({...base,key:r.id+":s",kind:"good",text:"Room "+r.room+" · Ready "+r.score+"/100",sub:"Attendant "+r.att+" · "+r.sup});
+    if(r.maint&&!r.maint_fixed_at){const u=r.maint.priority==="urgent";
+      ev.push({...base,key:r.id+":m",kind:u?"urgent":"maint",text:"Room "+r.room+" · Maintenance"+(u?" (URGENT)":""),
+        sub:typeof maintText==="function"?maintText(r.maint):""})}});
+  return ev.sort((a,b)=>String(b.at).localeCompare(String(a.at)))}
+const bellImportant=e=>e.kind==="bad"||e.kind==="urgent"||e.kind==="maint"||e.kind==="warn";
+function ago(at){const m=Math.round((Date.now()-new Date(at))/6e4);if(m<1)return"just now";if(m<60)return m+" min ago";const h=Math.round(m/60);if(h<24)return h+" h ago";return Math.round(h/24)+" d ago"}
+function bellUpdate(){if(!IS_ADMIN())return;const seen=bellSeen(),ev=bellEvents();
+  const unread=ev.filter(e=>new Date(e.at)>new Date(seen)&&bellImportant(e)).length;$("#bellCount").textContent=unread?(unread>99?"99+":String(unread)):"";
+  /* phone/PC pop-up for new Re-clean or maintenance while the app is open */
+  const keys=new Set(ev.map(e=>e.key));
+  if(bellKnown&&"Notification" in window&&Notification.permission==="granted")
+    ev.filter(e=>!bellKnown.has(e.key)&&(e.kind==="bad"||e.kind==="urgent"||e.kind==="maint")).slice(0,5)
+      .forEach(e=>{try{new Notification(e.text,{body:e.sub||"",tag:e.key})}catch(err){}});
+  bellKnown=keys;if(!$("#bellPanel").hidden)bellRender()}
+function bellRender(){const P=$("#bellPanel"),seen=bellSeen(),ev=bellEvents().slice(0,40);P.innerHTML="";
+  const h=el("div","bellhead");h.append(el("b",null,"Notifications"));const mr=el("button",null,"Mark all as read");mr.type="button";
+  mr.onclick=()=>{store(bellKey(),new Date().toISOString());bellUpdate();bellRender()};h.append(mr);P.append(h);
+  if("Notification" in window&&Notification.permission==="default"){const pb=el("button","btn sm bellperm","Allow pop-up alerts on this device");pb.type="button";
+    pb.onclick=()=>Notification.requestPermission().then(()=>bellRender());P.append(pb)}
+  if(!ev.length){P.append(el("div","bellempty","No inspections yet."));return}
+  ev.forEach(e=>{const it=el("div","bellitem"+(new Date(e.at)>new Date(seen)&&bellImportant(e)?" new":""));const dot=el("i",e.kind);
+    it.append(dot,el("span",null,e.text),el("small",null,[e.sub,ago(e.at)].filter(Boolean).join(" · ")));
+    it.onclick=()=>{P.hidden=true;roomHistory(e.r.prop,e.r.room)};P.append(it)})}
+$("#bellBtn").onclick=e=>{e.stopPropagation();const P=$("#bellPanel");P.hidden=!P.hidden;if(!P.hidden)bellRender()};
+$("#bellPanel").addEventListener("click",e=>e.stopPropagation());
+document.addEventListener("click",()=>{const P=$("#bellPanel");if(!P.hidden)P.hidden=true});
+/* check for new inspections every minute while an Admin has the app open */
+setInterval(()=>{if(ME&&IS_ADMIN()&&document.visibilityState==="visible"&&!EDIT)refresh()},60000);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&ME&&IS_ADMIN()&&!EDIT)refresh()});
+
+
+
+$("#refBtn").onclick=async e=>{const b=e.currentTarget;b.disabled=true;b.textContent="⟳ Refreshing…";saveDraft();
+  try{await Promise.race([flush(),new Promise(ok=>setTimeout(ok,6000))])}catch(err){}
+  location.replace(location.pathname+"?v="+Date.now()+location.hash)};
+if(/[?&]v=\d+/.test(location.search))history.replaceState(null,"",location.pathname+location.hash);
 applyLang();fillSelects();buildForm();fillNames();loadDraft();boot();
 
 </script>
