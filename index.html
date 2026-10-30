@@ -556,6 +556,19 @@ header .eyebrow{font-size:1.15rem;letter-spacing:.12em;font-weight:700;line-heig
 
 .tag.user{background:var(--accent-soft);color:var(--accent);font-weight:600}
 .tag.user::before{content:"👤 "}
+
+/* ---- forgot password ---- */
+.forgot{all:unset;cursor:pointer;color:var(--accent);font-size:.82rem;font-weight:600;text-align:center;display:block;margin-top:4px}
+.forgot:hover{text-decoration:underline}
+.fpbox{display:grid;gap:10px;margin-top:12px;padding-top:14px;border-top:1px solid var(--line)}
+.fpbox[hidden]{display:none}
+.fpok{color:var(--pass);font-weight:600;font-size:.86rem;margin:0}
+.pwreq{border:1px solid var(--warn);background:var(--warn-soft);border-radius:12px;padding:12px;margin-bottom:12px}
+.pwreq h3{margin:0 0 8px;font-size:.92rem}
+.pwrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:8px 0;border-top:1px solid color-mix(in srgb,var(--warn) 25%,transparent)}
+.pwrow:first-of-type{border-top:0}
+.pwrow .who2{flex:1 1 200px;font-size:.86rem}
+.pwrow .who2 small{display:block;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -583,7 +596,15 @@ header .eyebrow{font-size:1.15rem;letter-spacing:.12em;font-weight:700;line-heig
       <label class="f"><span data-t="Password">Password</span><input id="l-pass" type="password" autocomplete="current-password" required></label>
       <p class="err" id="l-err" hidden></p>
       <button class="btn primary" id="l-btn" type="submit" data-t="Sign in">Sign in</button>
+      <button class="forgot" id="fpLink" type="button">Forgot password?</button>
     </form>
+    <div class="fpbox" id="fpBox" hidden>
+      <p class="muted" style="margin:0">Your request goes to the owner, who will set a new password and give it to you.</p>
+      <label class="f"><span>Username</span><input id="fp-user" autocapitalize="none" spellcheck="false" placeholder="e.g. ali"></label>
+      <label class="f"><span>Message (optional)</span><input id="fp-note" maxlength="200" placeholder="e.g. Night shift, call me on 0100…"></label>
+      <button class="btn" id="fp-send" type="button">Send request to owner</button>
+      <p class="fpok" id="fp-ok" hidden>Request sent. The owner will contact you with your new password.</p>
+    </div>
   </div>
 </section>
 
@@ -694,6 +715,7 @@ header .eyebrow{font-size:1.15rem;letter-spacing:.12em;font-weight:700;line-heig
         <label class="f"><span>Role</span><select id="u-role"><option value="user">User</option><option value="admin">Admin</option></select></label>
         <button class="btn primary" id="u-add" type="button">Add user</button>
       </div>
+      <div id="pwReqs" class="owner-only"></div>
       <div id="userList" style="margin-top:14px"></div>
     </div>
 
@@ -1075,6 +1097,7 @@ async function loadAll(){const out=[];
   return out}
 async function refresh(){if(!IS_ADMIN())return;
   try{LOG=(await loadAll()).map(fromRow)}catch(e){toast(t("Could not load inspections")+": "+(e.message||e));return}
+  if(IS_OWNER)await loadPwReqs();
   if(!$("#v-log").hidden)renderLog();if(!$("#v-dash").hidden)renderDash();bellUpdate()}
 async function loadNames(){const {data,error}=await sb.from("staff_names").select("kind,name");if(error||!data)return;
   NAMES={sup:[],att:[]};data.forEach(r=>{if(NAMES[r.kind])NAMES[r.kind].push(r.name)});NAMES.sup.sort();NAMES.att.sort();store(K.names,NAMES);fillNames()}
@@ -1163,7 +1186,7 @@ async function enter(user){
   ROLE=prof&&prof.role==="admin"?"admin":"user";MYNAME=(prof&&prof.full_name)||user.email;
   document.body.classList.add("authed");document.body.classList.toggle("is-admin",IS_ADMIN());setAcct();
   IS_OWNER=false;document.body.classList.remove("is-owner");
-  if(IS_ADMIN())sb.rpc("is_owner").then(({data})=>{IS_OWNER=data===true;document.body.classList.toggle("is-owner",IS_OWNER)});
+  if(IS_ADMIN())sb.rpc("is_owner").then(({data})=>{IS_OWNER=data===true;document.body.classList.toggle("is-owner",IS_OWNER);if(IS_OWNER){loadPwReqs();if(!$("#v-set").hidden)renderPwReqs()}});
   $("#upLegacy").hidden=!(IS_ADMIN()&&LEGACY.length);
   if(!IS_ADMIN()&&!$("#f-sup").value){$("#f-sup").value=MYNAME;saveDraft()}
   showPending();show("inspect");loadSetup();loadNames();flush();if(IS_ADMIN())refresh()}
@@ -1763,6 +1786,29 @@ $("#loadAudit").onclick=async()=>{const {data,error}=await sb.from("audit_log").
   w.classList.add("audit-t");box.append(w)};
 
 
+
+/* ---------- forgot password → request to the owner ---------- */
+let PWREQ=[];
+$("#fpLink").onclick=()=>{const b=$("#fpBox");b.hidden=!b.hidden;if(!b.hidden){$("#fp-user").value=$("#l-user").value.trim();$("#fp-ok").hidden=true;$("#fp-user").focus()}};
+$("#fp-send").onclick=async e=>{const btn=e.currentTarget,u=$("#fp-user").value.trim();if(!u)return toast("Enter your username");if(!sb)return;
+  btn.disabled=true;const {error}=await sb.rpc("request_password_reset",{p_username:u,p_note:$("#fp-note").value.trim()||null});btn.disabled=false;
+  if(error)return toast(/could not find|schema cache/i.test(error.message||"")?"Password requests are not set up yet — ask the owner":error.message);
+  $("#fp-ok").hidden=false;$("#fp-note").value=""};
+async function loadPwReqs(){if(!IS_OWNER||!sb)return;const {data,error}=await sb.rpc("owner_list_password_requests");PWREQ=error?[]:(data||[]);if(typeof bellUpdate==="function")bellUpdate()}
+function renderPwReqs(){const box=$("#pwReqs");if(!box)return;box.innerHTML="";if(!IS_OWNER||!PWREQ.length)return;
+  const c=el("div","pwreq");c.append(el("h3",null,"🔑 Password requests ("+PWREQ.length+")"));
+  PWREQ.forEach(q=>{const r=el("div","pwrow"),w=el("div","who2");w.append(el("b",null,q.full_name||q.username));
+    w.append(el("small",null,q.username+" · "+new Date(q.created_at).toLocaleString()+(q.note?" · "+q.note:"")));r.append(w);
+    const set=el("button","btn sm primary","Set new password");set.type="button";
+    set.onclick=()=>{const pw=el("input");pw.type="text";pw.autocomplete="new-password";pw.placeholder="min. 6 characters";
+      dlgForm("New password for "+(q.full_name||q.username),[lab("New password",pw),el("p","muted uhint","Give this password to "+(q.full_name||q.username)+". They are signed out on all devices.")],"Set password",async()=>{
+        if(pw.value.length<6){toast("Password must be at least 6 characters");return false}
+        const {error}=await sb.rpc("owner_resolve_password_request",{p_id:q.id,p_password:pw.value});if(error){toast(error.message);return false}
+        toast("Password set for "+q.username);await loadPwReqs();renderPwReqs();return true})};
+    const dis=el("button","btn sm","Dismiss");dis.type="button";
+    dis.onclick=async()=>{const {error}=await sb.rpc("owner_dismiss_password_request",{p_id:q.id});if(error)return toast(error.message);await loadPwReqs();renderPwReqs()};
+    r.append(set,dis);c.append(r)});box.append(c)}
+
 /* ---------- user management (Admin) ---------- */
 const uName=e=>String(e||"").replace(/@inspect\.local$/i,"");
 const rpcErr=e=>/could not find the function|does not exist|schema cache/i.test(e.message||"")?"Run supabase_user_admin.sql in Supabase first":(e.message||String(e));
@@ -1770,7 +1816,7 @@ let USERS=[];
 async function loadUsers(){const box=$("#userList");if(!box||!sb)return;
   const {data,error}=await sb.rpc("admin_list_users");
   if(error){box.innerHTML="";box.append(el("p","err",rpcErr(error)));return}
-  USERS=data||[];renderUsers()}
+  USERS=data||[];renderUsers();if(IS_OWNER)loadPwReqs().then(renderPwReqs)}
 function renderUsers(){const box=$("#userList");box.innerHTML="";
   if(!USERS.length){box.append(el("p","empty","No users."));return}
   const rows=USERS.map(u=>{const me=ME&&u.id===ME.id;
@@ -1840,6 +1886,8 @@ const bellKey=()=>"ri_bell_seen_"+(ME?ME.id:"");
 let bellKnown=null;
 function bellSeen(){const v=load(bellKey(),null);return v||new Date(Date.now()-864e5).toISOString()}
 function bellEvents(){const ev=[];
+  (IS_OWNER?PWREQ:[]).forEach(q=>ev.push({at:q.created_at,key:"pw:"+q.id+":"+q.created_at,kind:"urgent",pw:q,
+    text:"🔑 Password request · "+(q.full_name||q.username),sub:q.username+(q.note?" — "+q.note:"")}));
   LOG.forEach(r=>{const at=r.ts||(r.date+"T00:00:00Z"),base={at,r};
     if(r.score<85)ev.push({...base,key:r.id+":s",kind:"bad",text:"Room "+r.room+" · Re-clean "+r.score+"/100",sub:"Attendant "+r.att+" · "+r.sup});
     else if(r.score<95)ev.push({...base,key:r.id+":s",kind:"warn",text:"Room "+r.room+" · Re-touch "+r.score+"/100",sub:"Attendant "+r.att+" · "+r.sup});
@@ -1866,7 +1914,7 @@ function bellRender(){const P=$("#bellPanel"),seen=bellSeen(),ev=bellEvents().sl
   if(!ev.length){P.append(el("div","bellempty","No inspections yet."));return}
   ev.forEach(e=>{const it=el("div","bellitem"+(new Date(e.at)>new Date(seen)&&bellImportant(e)?" new":""));const dot=el("i",e.kind);
     it.append(dot,el("span",null,e.text),el("small",null,[e.sub,ago(e.at)].filter(Boolean).join(" · ")));
-    it.onclick=()=>{P.hidden=true;roomHistory(e.r.prop,e.r.room)};P.append(it)})}
+    it.onclick=()=>{P.hidden=true;if(e.pw){show("set");setTimeout(()=>{const x=$("#pwReqs");if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},150)}else roomHistory(e.r.prop,e.r.room)};P.append(it)})}
 $("#bellBtn").onclick=e=>{e.stopPropagation();const P=$("#bellPanel");P.hidden=!P.hidden;if(!P.hidden)bellRender()};
 $("#bellPanel").addEventListener("click",e=>e.stopPropagation());
 document.addEventListener("click",()=>{const P=$("#bellPanel");if(!P.hidden)P.hidden=true});
