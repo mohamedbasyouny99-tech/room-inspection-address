@@ -1082,23 +1082,68 @@ async function flush(){if(flushing||!sb||!ME)return;flushing=true;let sent=0,err
   if(offline)toast(pendingCount()+" "+t("inspection(s) kept on this device · will upload when online"));
   else if(err)toast(t("Upload failed")+": "+(err.message||err)+(err.code?" ("+err.code+")":""));
   else if(sent)toast(sent+" "+t("inspection(s) uploaded"));
-  if(sent&&IS_ADMIN())refresh();
+  if(sent&&IS_ADMIN())pollChanges();
 }
 window.addEventListener("online",flush);setInterval(flush,60000);
 
+/* RAW = every inspection row by id, kept in this device's cache (Admins only).
+   Full download only the first time or when rows were deleted; otherwise only what changed is downloaded. */
+let RAW=new Map(),NM={},MAXC="",MAXU="";
+const IDB={db:null,
+  open(){return this.db||(this.db=new Promise(ok=>{try{const r=indexedDB.open("ri_cache",1);r.onupgradeneeded=()=>r.result.createObjectStore("kv");r.onsuccess=()=>ok(r.result);r.onerror=()=>ok(null)}catch(e){ok(null)}}))},
+  async get(k){const d=await this.open();if(!d)return null;return new Promise(ok=>{try{const q=d.transaction("kv").objectStore("kv").get(k);q.onsuccess=()=>ok(q.result||null);q.onerror=()=>ok(null)}catch(e){ok(null)}})},
+  async set(k,v){const d=await this.open();if(!d)return;try{d.transaction("kv","readwrite").objectStore("kv").put(v,k)}catch(e){}},
+  async clear(){const d=await this.open();if(!d)return;try{d.transaction("kv","readwrite").objectStore("kv").clear()}catch(e){}}};
+const cacheKey=()=>ME?"rows:"+SUPABASE_URL+":"+ME.id:"";
+let cacheT=null;
+function saveCache(){clearTimeout(cacheT);cacheT=setTimeout(()=>{if(ME&&IS_ADMIN())IDB.set(cacheKey(),{rows:[...RAW.values()],MAXC,MAXU,at:Date.now()})},1500)}
+async function loadNamesMap(){const {data:pr}=await sb.from("profiles").select("id,full_name");NM={};(pr||[]).forEach(p=>NM[p.id]=p.full_name)}
+function decorate(r){r.creator={full_name:NM[r.created_by]||""};r.editor=r.updated_by?{full_name:NM[r.updated_by]||""}:null;return r}
+function track(r){if(r.created_at&&r.created_at>MAXC)MAXC=r.created_at;if(r.updated_at&&r.updated_at>MAXU)MAXU=r.updated_at}
+function rebuildLog(){LOG=[...RAW.values()].sort((a,b)=>a.insp_date<b.insp_date?1:a.insp_date>b.insp_date?-1:(a.created_at<b.created_at?1:a.created_at>b.created_at?-1:0)).map(fromRow)}
+function paintAll(){if(!$("#v-log").hidden)renderLog();if(!$("#v-dash").hidden)renderDash();bellUpdate()}
 async function loadAll(){const out=[];
   for(let from=0;;from+=1000){
     const {data,error}=await sb.from("inspections").select("*")
-      .order("insp_date",{ascending:false}).order("created_at",{ascending:false}).range(from,from+999);
+      .order("insp_date",{ascending:false}).order("created_at",{ascending:false}).order("id").range(from,from+999);
     if(error)throw error;out.push(...data);if(data.length<1000)break}
-  /* names of who entered / edited, looked up separately (no table relationship needed) */
-  const {data:pr}=await sb.from("profiles").select("id,full_name");const nm={};(pr||[]).forEach(p=>nm[p.id]=p.full_name);
-  out.forEach(r=>{r.creator={full_name:nm[r.created_by]||""};r.editor=r.updated_by?{full_name:nm[r.updated_by]||""}:null});
+  await loadNamesMap();
+  RAW=new Map();MAXC="";MAXU="";out.forEach(r=>{RAW.set(r.id,decorate(r));track(r)});saveCache();
   return out}
-async function refresh(){if(!IS_ADMIN())return;
-  try{LOG=(await loadAll()).map(fromRow)}catch(e){toast(t("Could not load inspections")+": "+(e.message||e));return}
+async function refresh(full){if(!IS_ADMIN())return;
+  if(!full&&!RAW.size){const c=await IDB.get(cacheKey());
+    if(c&&c.rows&&c.rows.length){await loadNamesMap();RAW=new Map();c.rows.forEach(r=>RAW.set(r.id,decorate(r)));MAXC=c.MAXC||"";MAXU=c.MAXU||"";
+      rebuildLog();paintAll();return pollChanges()}}
+  if(!full&&RAW.size)return pollChanges();
+  try{await loadAll();rebuildLog()}catch(e){toast(t("Could not load inspections")+": "+(e.message||e));return}
   if(IS_OWNER)await loadPwReqs();
-  if(!$("#v-log").hidden)renderLog();if(!$("#v-dash").hidden)renderDash();bellUpdate()}
+  paintAll()}
+/* light check every minute: a few hundred bytes when nothing changed */
+let POLLING=false;
+async function pollChanges(){if(!IS_ADMIN()||POLLING)return;if(!RAW.size)return refresh(true);POLLING=true;let full=false;
+  try{
+    const back=v=>v?new Date(Date.parse(v)-120000).toISOString():"1970-01-01T00:00:00Z";
+    const {data:ch,error}=await sb.from("inspections").select("*").or("created_at.gt."+back(MAXC)+",updated_at.gt."+back(MAXU)).limit(1000);
+    if(error)throw error;
+    if(ch.length>=1000)full=true;
+    else{
+      let changed=false;const newRooms=new Set();
+      if(ch.some(r=>(r.created_by&&!(r.created_by in NM))||(r.updated_by&&!(r.updated_by in NM))))await loadNamesMap();
+      ch.forEach(r=>{const o=RAW.get(r.id);if(!o)newRooms.add(r.prop+"\u0001"+r.room);
+        if(!o||o.updated_at!==r.updated_at||o.closed_at!==r.closed_at||o.maint_fixed_at!==r.maint_fixed_at){RAW.set(r.id,decorate(r));changed=true}track(r)});
+      /* a new inspection can auto-close older open ones of the same room */
+      if(newRooms.size){const ids=[...RAW.values()].filter(r=>!r.closed_at&&newRooms.has(r.prop+"\u0001"+r.room)).map(r=>r.id);
+        for(let i=0;i<ids.length;i+=100){const {data:cl}=await sb.from("inspections").select("id,closed_at,closed_by,close_note").in("id",ids.slice(i,i+100));
+          (cl||[]).forEach(c=>{const o=RAW.get(c.id);if(o&&o.closed_at!==c.closed_at){Object.assign(o,c);changed=true}})}}
+      /* deleted rows: compare the row count */
+      const {count,error:ce}=await sb.from("inspections").select("id",{count:"exact",head:true});
+      if(!ce&&count!==RAW.size)full=true;
+      else{if(changed){rebuildLog();saveCache()}
+        if(IS_OWNER)await loadPwReqs();
+        if(changed)paintAll();else bellUpdate()}}}
+  catch(e){}
+  finally{POLLING=false}
+  if(full)return refresh(true)}
 async function loadNames(){const {data,error}=await sb.from("staff_names").select("kind,name");if(error||!data)return;
   NAMES={sup:[],att:[]};data.forEach(r=>{if(NAMES[r.kind])NAMES[r.kind].push(r.name)});NAMES.sup.sort();NAMES.att.sort();store(K.names,NAMES);fillNames()}
 async function loadSetup(){
@@ -1164,7 +1209,7 @@ async function saveEdit(base){
     await uploadPhotos(rec,EDIT.uid);
     const row=toRow({...rec,uid:EDIT.uid});delete row.uid;delete row.duration_sec;row.na=(rec.na||[]).map(x=>({id:x.id||x}));row.maint=rec.maint||null;
     const {error}=await sb.from("inspections").update(row).eq("id",EDIT.id);
-    if(error)throw error;toast(t("Changes saved"));exitEdit();await refresh();show("log")}
+    if(error)throw error;toast(t("Changes saved"));exitEdit();await pollChanges();show("log")}
   catch(e){toast(t("Could not save changes")+": "+(e.message||e))}
   finally{btn.disabled=false}}
 
@@ -1202,7 +1247,7 @@ $("#loginForm").onsubmit=async e=>{e.preventDefault();if(!sb)return;
   b.disabled=false;b.textContent=t("Sign in");
   if(error)return loginErr(error.message==="Invalid login credentials"?t("Wrong username or password."):error.message);
   $("#l-pass").value="";await enter(data.user)};
-$("#logout").onclick=e=>arm(e.currentTarget,async()=>{if(EDIT)exitEdit();await sb.auth.signOut();localStorage.removeItem(K.prof);showLogin()},
+$("#logout").onclick=e=>arm(e.currentTarget,async()=>{if(EDIT)exitEdit();await sb.auth.signOut();localStorage.removeItem(K.prof);RAW=new Map();LOG=[];MAXC="";MAXU="";IDB.clear();showLogin()},
   pendingCount()?t("Unsent inspections wait for your next sign-in · tap again"):t("Tap again to sign out"));
 $("#syncNow").onclick=()=>flush();
 $("#langBtn").onclick=$("#langBtn2").onclick=()=>setLang(LANG==="ar"?"en":"ar");
@@ -1285,7 +1330,7 @@ function renderLog(){
       Object.assign(r,patch);renderLog();toast(t(r.closed_at?"Closed":"Reopened"))});
     const del=mk("Delete",null,"danger");
     del.onclick=e=>arm(e.currentTarget,async()=>{const {error}=await sb.from("inspections").delete().eq("id",r.id);
-      if(error)return toast(t("Delete failed")+": "+error.message);LOG=LOG.filter(x=>x.uid!==r.uid);renderLog();toast(t("Inspection deleted"))});
+      if(error)return toast(t("Delete failed")+": "+error.message);LOG=LOG.filter(x=>x.uid!==r.uid);RAW.delete(r.id);saveCache();renderLog();toast(t("Inspection deleted"))});
     d.append(a);box.append(d);
   });
 }
@@ -1868,12 +1913,12 @@ $("#impJson").onchange=async e=>{if(!IS_ADMIN())return;const recs=[];
   for(const f of e.target.files){try{const d=JSON.parse(await f.text());recs.push(...(d.log||[]));
     if(d.names)["sup","att"].forEach(k=>(d.names[k]||[]).forEach(n=>addName(k,n)))}catch(err){toast(t("Could not read")+" "+f.name)}}
   e.target.value="";
-  try{const n=await upload(recs);toast(n+" "+t("inspections uploaded · duplicates skipped"));refresh()}catch(err){toast(t("Upload failed")+": "+err.message)}};
-$("#upLegacy").onclick=async()=>{try{const n=await upload(LEGACY);toast(n+" "+t("old inspections uploaded · duplicates skipped"));refresh()}catch(err){toast(t("Upload failed")+": "+err.message)}};
-$("#refresh").onclick=async()=>{await loadSetup();await refresh();toast(LOG.length+" "+t("inspections loaded"))};
+  try{const n=await upload(recs);toast(n+" "+t("inspections uploaded · duplicates skipped"));refresh(true)}catch(err){toast(t("Upload failed")+": "+err.message)}};
+$("#upLegacy").onclick=async()=>{try{const n=await upload(LEGACY);toast(n+" "+t("old inspections uploaded · duplicates skipped"));refresh(true)}catch(err){toast(t("Upload failed")+": "+err.message)}};
+$("#refresh").onclick=async()=>{await loadSetup();await refresh(true);toast(LOG.length+" "+t("inspections loaded"))};
 let IS_OWNER=false;
 $("#wipe").onclick=e=>arm(e.currentTarget,async()=>{if(!IS_OWNER)return toast("Only the owner can delete all inspections");const {error}=await sb.from("inspections").delete().not("id","is",null);
-  if(error)return toast(t("Delete failed")+": "+error.message);LOG=[];renderLog();toast(t("All inspections deleted from the database"))},t("Tap again: delete ALL inspections"));
+  if(error)return toast(t("Delete failed")+": "+error.message);LOG=[];RAW=new Map();MAXC="";MAXU="";saveCache();renderLog();toast(t("All inspections deleted from the database"))},t("Tap again: delete ALL inspections"));
 
 /* ---------- tabs, install, start ---------- */
 document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>show(b.dataset.v));
@@ -1919,8 +1964,8 @@ $("#bellBtn").onclick=e=>{e.stopPropagation();const P=$("#bellPanel");P.hidden=!
 $("#bellPanel").addEventListener("click",e=>e.stopPropagation());
 document.addEventListener("click",()=>{const P=$("#bellPanel");if(!P.hidden)P.hidden=true});
 /* check for new inspections every minute while an Admin has the app open */
-setInterval(()=>{if(ME&&IS_ADMIN()&&document.visibilityState==="visible"&&!EDIT)refresh()},60000);
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&ME&&IS_ADMIN()&&!EDIT)refresh()});
+setInterval(()=>{if(ME&&IS_ADMIN()&&document.visibilityState==="visible"&&!EDIT)pollChanges()},60000);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&ME&&IS_ADMIN()&&!EDIT)pollChanges()});
 
 
 
